@@ -4,7 +4,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/llamafarm-ai/llamafarm?style=social)](https://github.com/llama-farm/farm
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Discord](https://img.shields.io/discord/1234567890?color=7289da&logo=discord&logoColor=white)](https://discord.gg/X9xdhTskjN)
+Join our discord channel! [Join](https://discord.gg/X9xdhTskjN) 
 
 
 <p align="center">
@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <strong>Turn AI models into single executables that run anywhere. It's like Docker, but for AI.</strong>
+  <strong>Turn AI models and associated agents, databases, and pipelines into single executables that run anywhere. It's like Docker, but for AI.</strong>
 </p>
 
 ---
@@ -20,6 +20,11 @@
 ## 🚀 What is LLaMA Farm
 
 Llama Farm packages your AI models, vector databases, and data pipelines into standalone binaries that run on any device - from Raspberry Pis to enterprise servers. **No Python. No CUDA hassles. No cloud bills.**
+
+## Why LLaMA Farm
+The current cloud AI model makes us digital serfs, paying rent to use tools we don't own, feeding data to systems we don't control. The farm model makes us owners—of our models, our data, our future. But ownership requires responsibility. You must tend your farm.
+
+When you own your model and your data, you own your future.  Let's make the AI revolution for EVERYONE. 
 
 ### The Old Way 😰
 ```bash
@@ -31,6 +36,8 @@ Llama Farm packages your AI models, vector databases, and data pipelines into st
 ```
 
 ### The llamafarm Way 🌱
+We are shipping in real time - join the revolution to help us go faster! 
+
 ```bash
 llamafarm plant mixtral-8x7b --target raspberry-pi --agent chat123 --rag --database vector
 🌱 Planting mixtral-8x7b...
@@ -60,9 +67,12 @@ llamafarm plant mixtral-8x7b --target raspberry-pi --agent chat123 --rag --datab
 ## 🎬 Quick Start
 
 ### Install Llama-Farm
+
+#### Option 1: Install via npm (Recommended)
 ```bash
-curl -sSL https://llamafarm.dev/install | sh
+npm install -g @llamafarm/llamafarm
 ```
+
 
 ### Deploy Your First Model
 ```bash
