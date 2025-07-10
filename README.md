@@ -2,7 +2,7 @@
 
 ### Deploy any AI model, agents, database, and RAG pipeline  to any device in 30 seconds. No cloud required.
 
-[![GitHub stars](https://img.shields.io/github/stars/llamafarm-ai/llamafarm?style=social)](https://github.com/llama-farm/farm
+[![GitHub stars](https://img.shields.io/github/stars/llama-farm/llamafarm?style=social)](https://github.com/llama-farm/llamafarm)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 Join our discord channel! [Join](https://discord.gg/X9xdhTskjN) 
 
