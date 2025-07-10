@@ -118,13 +118,15 @@ llamafarm plant med-llama \
 
 ---
 
-## 🏆 Why Developers Love llamafarm
+## 🏆 Why Developers WILL Love llamafarm
 
 > "We replaced our $50K/month OpenAI bill with llamafarm. Deployment went from 3 days to 30 seconds." - **CTO, Fortune 500 Retailer**
 
 > "Finally, AI that respects user privacy. llamafarm is what we've been waiting for." - **Lead Dev, Healthcare Startup**
 
 > "I deployed Llama 3 to my grandma's laptop. She thinks I'm a wizard now." - **Random Internet Person**
+
+> "I am glad I joined LLaMA Farm so early, I am part os something huge" - **LLama Farm contributor**
 
 ---
 
