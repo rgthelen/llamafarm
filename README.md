@@ -4,7 +4,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/llamafarm-ai/llamafarm?style=social)](https://github.com/llama-farm/farm
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Discord](https://img.shields.io/discord/1234567890?color=7289da&logo=discord&logoColor=white)](https://discord.gg/llamafarm
+[![Discord](https://img.shields.io/discord/1234567890?color=7289da&logo=discord&logoColor=white)](https://discord.gg/X9xdhTskjN)
 
 
 <p align="center">
@@ -212,7 +212,7 @@ We love contributions! Check out our [Contributing Guide](CONTRIBUTING.md) to ge
 
 ```bash
 # Clone the repo
-git clone https://github.com/llamafarm-ai/llamafarm
+git clone https://github.com/llama-farm/llamafarm
 
 # Install dependencies
 make install
@@ -245,10 +245,9 @@ make test
 
 ## 🎯 Getting Help
 
-- 📖 [Documentation](https://docs.llamafarm.ai)
-- 💬 [Discord Community](https://discord.gg/llamafarm-ai)
-- 🐛 [Issue Tracker](https://github.com/llamafarm-ai/llamafarm/issues)
-- 📧 [Email Support](mailto:support@llamafarm.ai)
+- 💬 [Discord Community](https://discord.gg/X9xdhTskjN)
+- 🐛 [Issue Tracker](https://github.com/llama-farm/llamafarm/issues)
+- 📧 [Email Support](mailto:support@llamafarm.dev)
 
 ---
 
@@ -262,12 +261,6 @@ llamafarm is MIT licensed. See [LICENSE](LICENSE) for details.
   <strong>🌾 Bringing AI back to the farm, one deployment at a time.</strong>
   <br>
   <sub>If you like llamafarm, give us a ⭐ on GitHub!</sub>
-</p>
-
-<p align="center">
-  <a href="https://www.producthunt.com/posts/llamafarm-ai?utm_source=badge-featured" target="_blank">
-    <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=123456" alt="llamafarm AI - Deploy AI locally in 30 seconds | Product Hunt" width="250" height="54" />
-  </a>
 </p>
 
 ---
