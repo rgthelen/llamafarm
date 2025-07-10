@@ -32,7 +32,7 @@ Llama Farm packages your AI models, vector databases, and data pipelines into st
 
 ### The llamafarm Way 🌱
 ```bash
- llamafarm plant mixtral-8x7b --device raspberry-pi --agent chat123 --rag enabled --database vector
+llamafarm plant mixtral-8x7b --target raspberry-pi --agent chat123 --rag --database vector
 🌱 Planting mixtral-8x7b...
 🌱 Planting agent chat123
 🌱 Planting vector database
@@ -67,7 +67,7 @@ curl -sSL https://llamafarm.dev/install | sh
 ### Deploy Your First Model
 ```bash
 # Deploy Llama 3 with one command
-Llamafarm plant llama3-8b
+llamafarm plant llama3-8b
 
 # Or deploy with optimization for smaller devices
 llamafarm plant llama3-8b --optimize
