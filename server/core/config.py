@@ -9,6 +9,7 @@ load_dotenv()
 default_data_dir = user_data_dir("LlamaFarm", "LlamaFarm")
 
 class Settings(BaseSettings, env_file=".env"):
-    data_dir: str = default_data_dir
+    lf_project_dir: str = None
+    lf_data_dir: str = default_data_dir
 
 settings = Settings()
