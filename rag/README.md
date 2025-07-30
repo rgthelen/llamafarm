@@ -19,9 +19,21 @@ A lightweight, extensible RAG (Retrieval-Augmented Generation) system designed f
 1. **Python 3.8+**
 2. **Ollama** (for embeddings)
 
-### macOS Installation
+### macOS Installation with UV (Recommended)
 
-1. **Install Ollama**:
+1. **Install UV (the fast Python package manager)**:
+   ```bash
+   # Method 1: Official installer
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # Method 2: Homebrew
+   brew install uv
+   
+   # Method 3: pipx
+   pipx install uv
+   ```
+
+2. **Install Ollama**:
    ```bash
    # Method 1: Official installer
    curl -fsSL https://ollama.com/install.sh | sh
@@ -30,7 +42,7 @@ A lightweight, extensible RAG (Retrieval-Augmented Generation) system designed f
    brew install ollama
    ```
 
-2. **Start Ollama and pull the embedding model**:
+3. **Start Ollama and pull the embedding model**:
    ```bash
    # Start Ollama service
    ollama serve
@@ -39,53 +51,94 @@ A lightweight, extensible RAG (Retrieval-Augmented Generation) system designed f
    ollama pull nomic-embed-text
    ```
 
-3. **Install Python dependencies**:
+4. **Setup the project with UV**:
    ```bash
-   # Option 1: Direct installation
-   pip install -r requirements.txt
+   # Clone the repository
+   cd rag/
    
-   # Option 2: Use Python 3 explicitly
-   python3 -m pip install -r requirements.txt
+   # Create virtual environment and install dependencies
+   uv sync
    
-   # Option 3: Virtual environment (recommended)
-   python3 -m venv rag_env
-   source rag_env/bin/activate
-   pip install -r requirements.txt
+   # Activate the environment  
+   source .venv/bin/activate
+   
+   # Or run commands directly with uv
+   uv run python cli.py --help
+   ```
+
+### Alternative Installation (pip/venv)
+
+If you prefer traditional pip/venv:
+   ```bash
+   # Create virtual environment
+   python3 -m venv .venv
+   source .venv/bin/activate
+   
+   # Install with pip
+   pip install -e .
    ```
 
 ### Basic Usage
 
-1. **Initialize configuration:**
-   ```bash
-   python cli.py init
-   ```
+1. **Create configuration file:**
+   Create a `rag_config.json` file with your settings (see Configuration section below).
 
 2. **Test the system:**
    ```bash
-   python cli.py test --test-file filtered-english-incident-tickets.csv
+   uv run python cli.py test --test-file filtered-english-incident-tickets.csv
    ```
 
 3. **Ingest your CSV data:**
    ```bash
-   python cli.py ingest filtered-english-incident-tickets.csv
+   uv run python cli.py ingest filtered-english-incident-tickets.csv
    ```
 
 4. **Search the data:**
    ```bash
-   python cli.py search "data breach security issue"
-   python cli.py search "login problems"
-   python cli.py search "password reset"
+   uv run python cli.py search "data breach security issue"
+   uv run python cli.py search "login problems"
+   uv run python cli.py search "password reset"
    ```
 
 5. **Get collection info:**
    ```bash
-   python cli.py info
+   uv run python cli.py info
    ```
 
 ### Alternative: Run the Example Script
 
 ```bash
+# With UV
+uv run python example.py
+
+# Or with activated environment
 python example.py
+```
+
+### Development Commands
+
+```bash
+# Run tests
+uv run pytest
+
+# Run tests with coverage
+uv run pytest --cov
+
+# Format code
+uv run black .
+uv run isort .
+
+# Type checking
+uv run mypy .
+
+# Install development dependencies
+uv sync --dev
+
+# Add new dependency
+uv add package-name
+
+# Add development dependency
+uv add --dev package-name
 ```
 
 ## Architecture
@@ -316,7 +369,7 @@ ollama serve
 #### Python/pip Issues
 ```bash
 # Use Python 3 explicitly if needed
-python3 cli.py init
+# Create your rag_config.json file first (see Configuration section)
 python3 cli.py test
 
 # Create virtual environment if you get permission errors
@@ -330,8 +383,11 @@ pip install -r requirements.txt
 # Test Ollama connection
 curl http://localhost:11434/api/tags
 
-# Run comprehensive system tests
-python test_system.py
+# Run comprehensive system tests with UV
+uv run python test_system.py
+
+# Or run pytest
+uv run pytest
 ```
 
 ### General Issues
@@ -350,6 +406,151 @@ python test_system.py
 - Adjust batch sizes based on your hardware
 - Use appropriate embedding models for your use case
 - Consider chunking large CSV files
+
+## 🚀 Next Steps & Roadmap
+
+The RAG system is designed for continuous extension and improvement. Here are the planned next steps for expanding capabilities:
+
+### 🔧 Infrastructure Improvements
+
+#### Top-Level Configuration Library Integration
+- Replace current JSON config loading with centralized config management
+- Support for environment-based configuration
+- Configuration validation and schema enforcement
+- Hot-reload capabilities for development
+
+#### Global Logging Module Integration
+- Replace current basic logging with enterprise-grade logging system
+- Structured logging with JSON output
+- Log aggregation and monitoring integration
+- Configurable log levels per component
+
+#### Advanced Component Registration
+- Dynamic component discovery and registration
+- Plugin system for third-party extensions
+- Runtime component loading from external packages
+- Component dependency management
+
+### 📄 New Parser Support
+
+#### Document Format Expansion
+- **PDF Parser**: Extract text, metadata, and structure from PDF documents
+- **Word Document Parser**: Support for .docx files with rich formatting
+- **JSON Parser**: Handle nested JSON structures and arrays
+- **XML Parser**: Parse structured XML data with schema validation
+- **Web Scraper Parser**: Extract content from web pages and APIs
+- **Email Parser**: Process .eml and .msg files with attachment handling
+- **Markdown Parser**: Parse .md files with proper heading hierarchy
+
+#### Specialized Parsers
+- **Code Parser**: Extract functions, classes, and documentation from source code
+- **Log Parser**: Structure log files with timestamp and severity extraction
+- **Database Parser**: Connect directly to databases for real-time ingestion
+
+### 🗄️ New Vector Database Support
+
+#### Enterprise Vector Stores
+- **Pinecone**: Managed vector database with high-performance search
+- **Weaviate**: GraphQL-based vector database with semantic capabilities
+- **Qdrant**: High-performance vector similarity search engine
+- **Milvus**: Open-source vector database for large-scale deployments
+- **LanceDB**: Serverless vector database with SQL support
+
+#### Traditional Database Integration
+- **PostgreSQL with pgvector**: Leverage existing PostgreSQL infrastructure
+- **Elasticsearch**: Full-text search with vector similarity capabilities
+- **Redis with RedisSearch**: In-memory vector search for low-latency applications
+
+### 🧠 New Embedding Model Support
+
+#### Commercial Embedding APIs
+- **OpenAI Embeddings**: text-embedding-ada-002 and newer models
+- **Cohere Embed**: Multilingual embedding models
+- **Anthropic Claude**: When embedding APIs become available
+- **Google PaLM Embeddings**: Google's large language model embeddings
+
+#### Open Source Models
+- **Sentence Transformers**: Wide variety of pre-trained models
+- **Hugging Face Transformers**: Custom and fine-tuned embedding models
+- **BGE Models**: Beijing Academy of AI's high-performance embedders
+- **E5 Models**: Microsoft's multilingual embedding models
+
+#### Specialized Embeddings
+- **Code Embeddings**: Models trained specifically for source code
+- **Domain-Specific Models**: Healthcare, legal, finance-trained embedders
+- **Multimodal Embeddings**: Support for text + image embeddings
+
+### 🤖 AI Integration & API Keys
+
+#### ChatGPT/OpenAI Integration
+- **API Key Management**: Secure storage and rotation of OpenAI API keys
+- **GPT Integration**: Use GPT models for query expansion and result summarization
+- **Function Calling**: Leverage GPT's function calling for structured queries
+- **Streaming Responses**: Real-time response streaming for better UX
+
+#### Multi-Provider Support
+- **Anthropic Claude**: API key management and integration
+- **Google Gemini**: Support for Google's AI models
+- **Azure OpenAI**: Enterprise OpenAI service integration
+- **Local LLM Integration**: Support for locally hosted language models
+
+### 🎨 User Experience Enhancements
+
+#### Advanced CLI Features
+- **Interactive Mode**: Step-by-step guided setup and usage
+- **Configuration Wizard**: Automated configuration generation
+- **Batch Processing**: Handle multiple files and directories
+- **Progress Persistence**: Resume interrupted processing
+- **Result Export**: Save search results in various formats
+
+#### Web Interface
+- **REST API**: HTTP endpoints for all RAG operations
+- **Web Dashboard**: Browser-based interface for management
+- **Real-time Monitoring**: Live system status and performance metrics
+- **User Authentication**: Multi-user support with role-based access
+
+### 🔒 Security & Compliance
+
+#### Data Protection
+- **Encryption at Rest**: Secure storage of documents and embeddings
+- **API Key Encryption**: Secure credential management
+- **Access Controls**: Fine-grained permissions for different operations
+- **Audit Logging**: Complete audit trail of all system operations
+
+#### Privacy Features
+- **Data Anonymization**: Remove PII from documents before processing
+- **Selective Deletion**: Remove specific documents from vector stores
+- **Compliance Reporting**: Generate reports for regulatory requirements
+
+### 📊 Performance & Scalability
+
+#### Optimization Features
+- **Distributed Processing**: Scale across multiple machines
+- **GPU Acceleration**: Leverage CUDA for faster embedding generation
+- **Caching Layer**: Intelligent caching of embeddings and results
+- **Load Balancing**: Distribute requests across multiple instances
+
+#### Monitoring & Analytics
+- **Performance Metrics**: Track processing speed and accuracy
+- **Usage Analytics**: Understand system usage patterns
+- **Cost Tracking**: Monitor API usage and associated costs
+- **Health Checks**: Automated system health monitoring
+
+### 🧪 Advanced Features
+
+#### Intelligent Processing
+- **Semantic Chunking**: Smart document splitting based on content structure
+- **Query Expansion**: Automatic query enhancement for better results
+- **Result Ranking**: ML-based relevance scoring and ranking
+- **Duplicate Detection**: Identify and handle duplicate content
+
+#### Integration Capabilities
+- **Webhook Support**: Real-time notifications for processing events
+- **ETL Pipeline Integration**: Connect with data pipeline tools
+- **Message Queue Support**: Async processing with RabbitMQ/Kafka
+- **Kubernetes Deployment**: Cloud-native deployment configurations
+
+Each of these enhancements builds upon the solid foundation already established, utilizing the factory pattern and modular architecture to ensure seamless integration and minimal breaking changes.
 
 ## License
 

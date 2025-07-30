@@ -1542,3 +1542,296 @@ asyncio.run(process_documents(["doc1.pdf", "doc2.pdf", "doc3.pdf"]))
 This framework provides a flexible, extensible foundation for building document processing pipelines. By following the configuration-driven approach and leveraging the modular architecture, you can quickly build, test, and deploy sophisticated RAG systems tailored to your specific needs.
 
 For questions, contributions, or support, please refer to our GitHub repository and documentation.
+
+
+# Complete Guide to Embeddings and Vector Databases for RAG
+
+## 1. Understanding Embeddings
+
+### **Dense Embeddings**
+Dense embeddings represent text as continuous vectors where most/all dimensions have non-zero values.
+
+**Popular Dense Models:**
+
+| Model | Dimensions | Size (MB) | Speed | Quality | Best For |
+|-------|------------|-----------|--------|---------|----------|
+| **all-MiniLM-L6-v2** | 384 | 80 | ⚡⚡⚡⚡⚡ | ⭐⭐⭐ | Quick prototypes, real-time apps |
+| **all-mpnet-base-v2** | 768 | 420 | ⚡⚡⚡⚡ | ⭐⭐⭐⭐ | General purpose, balanced |
+| **bge-small-en-v1.5** | 384 | 130 | ⚡⚡⚡⚡ | ⭐⭐⭐⭐ | Chinese/English, efficient |
+| **bge-large-en-v1.5** | 1024 | 1340 | ⚡⚡⚡ | ⭐⭐⭐⭐⭐ | High accuracy needs |
+| **e5-large-v2** | 1024 | 1340 | ⚡⚡⚡ | ⭐⭐⭐⭐⭐ | Multi-lingual, high quality |
+| **instructor-xl** | 768 | 5000 | ⚡⚡ | ⭐⭐⭐⭐⭐ | Task-specific embeddings |
+| **OpenAI text-embedding-3-small** | 1536 | API | ⚡⚡⚡ | ⭐⭐⭐⭐ | Cloud-based, easy |
+| **OpenAI text-embedding-3-large** | 3072 | API | ⚡⚡ | ⭐⭐⭐⭐⭐ | Highest quality, cloud |
+
+### **Sparse Embeddings**
+Sparse embeddings represent text as high-dimensional vectors where most values are zero.
+
+**Popular Sparse Models:**
+
+| Model | Type | Dimensions | Best For |
+|-------|------|------------|----------|
+| **BM25** | Statistical | Variable | Keyword matching, exact terms |
+| **TF-IDF** | Statistical | Vocab size | Document collections |
+| **SPLADE** | Learned | ~30k | Neural + keyword benefits |
+| **ColBERT** | Learned | 128 per token | Fine-grained matching |
+
+### **Hybrid Approaches**
+Combine dense and sparse for best of both worlds.
+
+## 2. Dimensionality Trade-offs
+
+| Dimensions | Storage | Speed | Quality | Use Case |
+|------------|---------|--------|---------|----------|
+| **128-256** | 0.5-1 KB/doc | ⚡⚡⚡⚡⚡ | ⭐⭐ | Mobile apps, edge devices |
+| **384-512** | 1.5-2 KB/doc | ⚡⚡⚡⚡ | ⭐⭐⭐ | General web apps |
+| **768-1024** | 3-4 KB/doc | ⚡⚡⚡ | ⭐⭐⭐⭐ | Enterprise search |
+| **1536-3072** | 6-12 KB/doc | ⚡⚡ | ⭐⭐⭐⭐⭐ | Research, high accuracy |
+
+### **Dimension Reduction Techniques**
+- **PCA**: Linear reduction, fast but may lose information
+- **UMAP**: Non-linear, better preservation of relationships
+- **Matryoshka embeddings**: Models trained to be truncatable
+
+## 3. Vector Database Comparison
+
+### **Local/Open-Source Databases**
+
+| Database | Type | Strengths | Weaknesses | Best For |
+|----------|------|-----------|------------|----------|
+| **ChromaDB** | Local/Cloud | Simple API, easy setup | Limited scaling | Prototypes, <1M vectors |
+| **Qdrant** | Local/Cloud | Rust performance, filtering | Complex setup | Production, 1-10M vectors |
+| **Weaviate** | Local/Cloud | Multi-modal, GraphQL | Resource heavy | Multi-modal data |
+| **Milvus** | Distributed | Highly scalable | Complex ops | Large scale, >10M vectors |
+| **FAISS** | Library | Fastest, flexible | No persistence | Research, benchmarking |
+| **LanceDB** | Embedded | Serverless, simple | New, limited features | Edge deployments |
+| **Pinecone** | Cloud | Fully managed | Vendor lock-in, cost | No-ops teams |
+
+### **Database Feature Matrix**
+
+| Feature | ChromaDB | Qdrant | Weaviate | Milvus | FAISS | LanceDB |
+|---------|----------|---------|-----------|---------|--------|----------|
+| **Hybrid Search** | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| **Filtering** | ✅ | ✅✅ | ✅ | ✅ | ❌ | ✅ |
+| **Multi-tenancy** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ |
+| **GPU Support** | ❌ | ✅ | ❌ | ✅ | ✅ | ❌ |
+| **Memory Mapped** | ❌ | ✅ | ❌ | ❌ | ✅ | ✅ |
+
+## 4. Chunking Strategies
+
+### **Chunking Methods by Data Type**
+
+| Data Type | Chunk Size | Overlap | Method | Rationale |
+|-----------|------------|---------|---------|-----------|
+| **Technical Docs** | 512-1024 | 100-200 | Semantic | Preserve context |
+| **Legal Text** | 256-512 | 50-100 | Sentence | Precise references |
+| **Conversations** | By turn | None | Speaker-aware | Natural boundaries |
+| **Code** | Function/Class | None | AST-based | Logical units |
+| **Research Papers** | 1024-2048 | 200 | Section-aware | Complete thoughts |
+| **FAQ/Q&A** | Question+Answer | None | Pair-based | Atomic units |
+
+### **Advanced Chunking Techniques**
+1. **Semantic Chunking**: Break at topic changes
+2. **Sliding Window**: Multiple overlapping chunks
+3. **Hierarchical**: Parent-child relationships
+4. **Dynamic**: Adjust size based on content
+
+## 5. Decision Framework
+
+### **Quick Decision Tree**
+
+```
+Start Here
+    ↓
+Is your data size > 10M documents?
+    YES → Consider distributed (Milvus, Elasticsearch)
+    NO ↓
+    
+Do you need keyword search too?
+    YES → Hybrid approach (Qdrant, Weaviate)
+    NO ↓
+    
+Is latency critical (<50ms)?
+    YES → Small embeddings (384d) + FAISS/LanceDB
+    NO ↓
+    
+Is accuracy most important?
+    YES → Large embeddings (1024d+) + Qdrant
+    NO → Balanced approach (768d + ChromaDB)
+```
+
+### **Configuration Recommendations by Use Case**
+
+| Use Case | Embedding Model | Dimensions | Chunk Size | Vector DB | Rationale |
+|----------|----------------|------------|------------|-----------|-----------|
+| **Chatbot (General)** | all-mpnet-base-v2 | 768 | 512 | ChromaDB | Balanced performance |
+| **Legal Research** | bge-large + BM25 | 1024 | 256 | Qdrant | Precision + keywords |
+| **Code Search** | CodeBERT | 768 | Function-level | Weaviate | Code understanding |
+| **Medical Records** | BioBERT + SPLADE | 768 | 256 | Qdrant | Domain-specific |
+| **Customer Support** | e5-large-v2 | 1024 | Conversation | Milvus | Scale + quality |
+| **Academic Papers** | SPECTER + BM25 | 768 | 1024 | Elasticsearch | Citations + search |
+| **Product Search** | instructor-xl | 768 | Product desc | Pinecone | Task-specific |
+| **Multi-lingual** | e5-large-v2 | 1024 | 512 | Qdrant | Language support |
+
+### **Constraints-Based Selection**
+
+| Constraint | Recommendation |
+|------------|----------------|
+| **Limited RAM (<4GB)** | 384d embeddings, LanceDB, chunk size 256 |
+| **No GPU** | CPU-optimized models (MiniLM), FAISS-CPU |
+| **High Throughput** | Batch processing, smaller models, caching |
+| **Air-gapped** | Local models only, Qdrant/ChromaDB |
+| **Real-time (<100ms)** | 384d, in-memory index, pre-compute |
+| **Highest Accuracy** | 1536d+, re-ranking, hybrid search |
+
+## 6. Optimization Strategies
+
+### **Storage Optimization**
+```python
+# Quantization example
+from qdrant_client import models
+
+# Reduce memory 4x with scalar quantization
+collection_config = models.Collection(
+    vector_size=768,
+    quantization_config=models.ScalarQuantization(
+        type=models.ScalarType.INT8,
+        quantile=0.99,
+        always_ram=False
+    )
+)
+```
+
+### **Performance Optimization**
+```python
+# Batch processing
+embeddings = model.encode(texts, batch_size=32, show_progress=True)
+
+# Caching frequent queries
+from functools import lru_cache
+
+@lru_cache(maxsize=1000)
+def get_embedding(text):
+    return model.encode(text)
+```
+
+### **Quality Optimization**
+```python
+# Hybrid search example
+def hybrid_search(query, k=10):
+    # Dense search
+    dense_results = vector_db.search(
+        embedding=embed_model.encode(query),
+        limit=k*2
+    )
+    
+    # Sparse search (BM25)
+    sparse_results = bm25_index.search(query, k=k*2)
+    
+    # Reciprocal Rank Fusion
+    return fuse_results(dense_results, sparse_results, k=k)
+```
+
+## 7. Cost Analysis
+
+### **Embedding Costs**
+
+| Model | Cost per 1M tokens | Speed | Self-hosted |
+|-------|-------------------|--------|-------------|
+| OpenAI ada-002 | $0.10 | Fast | ❌ |
+| OpenAI 3-small | $0.02 | Fast | ❌ |
+| OpenAI 3-large | $0.13 | Medium | ❌ |
+| Cohere embed-v3 | $0.10 | Fast | ❌ |
+| Open source | $0 | Variable | ✅ |
+
+### **Vector Database Costs (Monthly)**
+
+| Database | 1M vectors | 10M vectors | 100M vectors |
+|----------|------------|-------------|--------------|
+| Pinecone | $70 | $700 | Custom |
+| Qdrant Cloud | $25 | $250 | $2500 |
+| Weaviate Cloud | $25 | $250 | Custom |
+| Self-hosted | Infrastructure only | Infrastructure only | Infrastructure only |
+
+## 8. Implementation Examples
+
+### **Example 1: High-Performance Local RAG**
+```python
+# For speed-critical applications
+config = {
+    "embedding_model": "all-MiniLM-L6-v2",  # 384d, fast
+    "chunk_size": 256,
+    "chunk_overlap": 50,
+    "vector_db": "lancedb",  # Embedded, fast
+    "index_type": "IVF_FLAT",
+    "quantization": "int8"
+}
+```
+
+### **Example 2: High-Accuracy Enterprise RAG**
+```python
+# For accuracy-critical applications
+config = {
+    "embedding_model": "bge-large-en-v1.5",  # 1024d
+    "chunk_size": 512,
+    "chunk_overlap": 128,
+    "vector_db": "qdrant",
+    "hybrid_search": True,
+    "reranker": "cross-encoder/ms-marco-MiniLM-L-6-v2"
+}
+```
+
+### **Example 3: Scalable Multi-tenant RAG**
+```python
+# For SaaS applications
+config = {
+    "embedding_model": "e5-large-v2",  # Multi-lingual
+    "chunk_size": 512,
+    "chunk_overlap": 100,
+    "vector_db": "milvus",
+    "partitioning": "tenant_id",
+    "caching": "redis"
+}
+```
+
+## 9. Monitoring and Evaluation
+
+### **Key Metrics to Track**
+
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| **Retrieval Precision** | >0.8 | Relevant docs in top-k |
+| **Latency (P95)** | <200ms | End-to-end timing |
+| **Embedding Time** | <50ms | Model inference only |
+| **Index Time** | <10ms | Vector search only |
+| **Memory Usage** | <75% | System monitoring |
+
+### **A/B Testing Framework**
+```python
+def compare_configurations(config_a, config_b, test_queries):
+    results = {
+        "config_a": evaluate_rag(config_a, test_queries),
+        "config_b": evaluate_rag(config_b, test_queries)
+    }
+    
+    # Compare metrics
+    for metric in ["precision", "recall", "latency", "cost"]:
+        winner = "A" if results["config_a"][metric] > results["config_b"][metric] else "B"
+        print(f"{metric}: Config {winner} wins")
+```
+
+## 10. Future Trends
+
+### **Emerging Technologies**
+1. **Matryoshka Embeddings**: Variable-dimension embeddings
+2. **Late Interaction Models**: ColBERT-style architectures
+3. **Learned Indices**: Neural network-based indexing
+4. **Multi-modal Embeddings**: Text + image + code
+5. **Streaming Embeddings**: Real-time updates
+
+### **Best Practices Summary**
+1. **Start simple**: MiniLM + ChromaDB for prototypes
+2. **Measure everything**: A/B test configurations
+3. **Hybrid when needed**: Dense + sparse for best results
+4. **Consider constraints**: Choose based on your limits
+5. **Plan for scale**: Design for 10x growth

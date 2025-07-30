@@ -14,51 +14,51 @@ def main():
     """Example RAG pipeline usage."""
     # Setup logging
     logging.basicConfig(level=logging.INFO)
-    
+
     # Create components
     parser = CustomerSupportCSVParser()
-    embedder = OllamaEmbedder(config={
-        "model": "nomic-embed-text",
-        "batch_size": 8  # Smaller batch for demo
-    })
-    vector_store = ChromaStore(config={
-        "collection_name": "example_tickets",
-        "persist_directory": "./example_chroma_db"
-    })
-    
+    embedder = OllamaEmbedder(
+        config={"model": "nomic-embed-text", "batch_size": 8}  # Smaller batch for demo
+    )
+    vector_store = ChromaStore(
+        config={
+            "collection_name": "example_tickets",
+            "persist_directory": "./example_chroma_db",
+        }
+    )
+
     # Create pipeline
     pipeline = Pipeline("Example RAG Pipeline")
     pipeline.add_component(parser)
     pipeline.add_component(embedder)
     pipeline.add_component(vector_store)
-    
+
     # Process the sample CSV
     csv_file = "filtered-english-incident-tickets.csv"
     if not Path(csv_file).exists():
         print(f"Sample CSV file not found: {csv_file}")
         return
-    
+
     print("Processing customer support tickets...")
-    
+
     try:
         result = pipeline.run(source=csv_file)
-        
+
         print(f"\nPipeline completed!")
         print(f"  Documents processed: {len(result.documents)}")
         print(f"  Errors: {len(result.errors)}")
-        
+
         if result.errors:
             print("\nFirst few errors:")
             for error in result.errors[:3]:
                 print(f"  - {error}")
-        
+
         # Example search
         print("\nPerforming example search...")
         search_results = vector_store.search(
-            query="data breach security issue",
-            top_k=3
+            query="data breach security issue", top_k=3
         )
-        
+
         print(f"Found {len(search_results)} similar tickets:")
         for i, doc in enumerate(search_results, 1):
             print(f"\n{i}. Ticket {doc.id}")
@@ -67,7 +67,7 @@ def main():
                 print(f"   Priority: {doc.metadata['priority']}")
             if "tags" in doc.metadata:
                 print(f"   Tags: {doc.metadata['tags']}")
-        
+
     except Exception as e:
         print(f"Pipeline failed: {e}")
         raise
