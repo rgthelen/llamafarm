@@ -6,8 +6,8 @@ from core.config import settings
 from core.version import version
 
 # Create the data directory if it doesn't exist
-os.makedirs(settings.data_dir, exist_ok=True)
-os.makedirs(os.path.join(settings.data_dir, "projects"), exist_ok=True)
+os.makedirs(settings.lf_data_dir, exist_ok=True)
+os.makedirs(os.path.join(settings.lf_data_dir, "projects"), exist_ok=True)
 
 app = FastAPI()
 
@@ -21,7 +21,7 @@ def read_root():
 def get_info():
   return {
     "version": version,
-    "data_directory": settings.data_dir,
+    "data_directory": settings.lf_data_dir,
   }
 
 if __name__ == "__main__":
