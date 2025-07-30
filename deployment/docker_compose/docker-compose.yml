@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend Server
+  server:
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # React Frontend Designer
+  designer:
+    build:
+      context: ../designer
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_APP_API_URL=http://localhost:8000
+      - VITE_APP_ENV=production
+    depends_on:
+      server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+  # Python Runtime Service
+  runtime:
+    build:
+      context: ../runtime
+      dockerfile: Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - server
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  # Add persistent volumes if needed
+  # server_data:
+  # designer_data:

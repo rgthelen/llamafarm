@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend Server (Development)
+  server:
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RELOAD=true
+    volumes:
+      - ../server:/app
+    command: ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # React Frontend Designer (Development)
+  designer:
+    build:
+      context: ../designer
+      dockerfile: Dockerfile
+      target: builder
+    ports:
+      - "5173:5173"  # Vite dev server port
+    environment:
+      - VITE_APP_API_URL=http://localhost:8000
+      - VITE_APP_ENV=development
+    volumes:
+      - ../designer:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    depends_on:
+      - server
+
+  # Python Runtime Service (Development)
+  runtime:
+    build:
+      context: ../runtime
+      dockerfile: Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ../runtime:/app
+    depends_on:
+      - server
+
+networks:
+  default:
+    driver: bridge
