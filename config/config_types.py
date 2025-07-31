@@ -53,12 +53,20 @@ class RAGConfig(TypedDict):
     embedder: Embedder | None
     vector_store: VectorStore | None
 
+class DatasetConfig(TypedDict):
+    """Dataset configuration."""
+    name: str
+    files: list[str]
+    parser: Parser | None
+
 class LlamaFarmConfig(TypedDict):
     """Complete LlamaFarm configuration."""
     version: Literal["v1"]
+    name: str
     prompts: list[PromptConfig] | None
     rag: RAGConfig
     models: list[ModelConfig]
+    datasets: list[DatasetConfig]
 
 # Type alias for the configuration dictionary
 
