@@ -3,6 +3,7 @@ title: LlamaFarm Config
 type: object
 required:
   - version
+  - name
   - prompts
   - rag
   - datasets
@@ -13,6 +14,10 @@ properties:
     enum: ["v1"]
     default: v1
     description: Config version, must be "v1"
+  name:
+    type: string
+    description: Project name
+    example: my-namespace/my-project
   prompts:
     type: array
     items:

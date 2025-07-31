@@ -311,7 +311,7 @@ def save_config(
     Raises:
         ConfigError: If validation fails or file cannot be saved.
     """
-    config_file = Path(config_path)
+    config_file = find_config_file(config_path) or Path(config_path) / "llamafarm.yaml"
 
     # Validate configuration before saving
     if validate:
@@ -325,7 +325,7 @@ def save_config(
 
     # Determine format
     if format is None:
-        suffix = config_file.suffix.lower()
+        suffix = config_file.suffix.lower() if config_file and config_file.suffix else ".yaml"
         if suffix in [".yaml", ".yml"]:
             format = "yaml"
         elif suffix == ".toml":
@@ -337,9 +337,6 @@ def save_config(
                 f"Cannot infer format from extension '{suffix}'. "
                 "Please specify format explicitly or use .yaml, .yml, .toml, or .json extension."
             )
-
-    # Ensure parent directory exists
-    config_file.parent.mkdir(parents=True, exist_ok=True)
 
     # Save file based on format
     try:
