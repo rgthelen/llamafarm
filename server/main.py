@@ -8,10 +8,12 @@ from core.version import version
 # Create the data directory if it doesn't exist
 os.makedirs(settings.lf_data_dir, exist_ok=True)
 os.makedirs(os.path.join(settings.lf_data_dir, "projects"), exist_ok=True)
+from api.routers.inference import router as inference_router
 
 app = FastAPI()
 
 app.include_router(projects_router, prefix="/v1")
+app.include_router(inference_router, prefix="/v1")
 
 @app.get("/")
 def read_root():
