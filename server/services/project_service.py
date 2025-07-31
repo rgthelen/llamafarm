@@ -20,5 +20,5 @@ class ProjectService:
 
   @classmethod
   def save_config(cls, project_id: str, config: dict) -> LlamaFarmConfig:
-    return save_config(self.get_project_dir(project_id), config)
+    return save_config(cls.get_project_dir(project_id), config)
     
