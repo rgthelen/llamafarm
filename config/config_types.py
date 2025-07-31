@@ -3,7 +3,7 @@ Type definitions for LlamaFarm configuration based on the JSON schema.
 This file is auto-generated from schema.yaml - DO NOT EDIT MANUALLY.
 """
 
-from typing import TypedDict, List, Literal, Optional, Union
+from typing import TypedDict, List, Literal, Optional, Union, Dict, Any
 
 
 class PromptConfig(TypedDict):
@@ -16,6 +16,19 @@ class ModelConfig(TypedDict):
     """Configuration for a single model."""
     provider: Literal["openai", "anthropic", "google", "local", "custom"]
     model: str
+
+class DefaultsConfig(TypedDict):
+    """Default component selections for RAG."""
+    parser: str
+    embedder: str
+    vector_store: str
+    retrieval_strategy: str
+
+class DatasetsConfig(TypedDict):
+    """Configuration for a single dataset."""
+    name: str
+    parser: Optional[str]
+    files: List[str]
 
 class RAGConfig(TypedDict):
     """RAG (Retrieval-Augmented Generation) configuration."""
