@@ -3,6 +3,7 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.exception_handlers import http_exception_handler
 from api.routers.projects import router as projects_router
+from api.routers.datasets import router as datasets_router
 from core.config import settings
 from core.version import version
 import traceback
@@ -23,6 +24,7 @@ async def global_exception_handler(request, exc: HTTPException):
 
 app.include_router(projects_router, prefix="/v1")
 app.include_router(inference_router, prefix="/v1")
+app.include_router(datasets_router, prefix="/v1")
 
 @app.get("/")
 def read_root():
