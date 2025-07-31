@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from server.services.project_service import ProjectService
+from services.project_service import ProjectService
 
 router = APIRouter(
   prefix="/projects/{namespace}/{project}/datasets",
@@ -8,11 +8,9 @@ router = APIRouter(
 )
 
 class Dataset(BaseModel):
-    id: int
     name: str
-    description: str
-    namespace: str
-    project: str
+    parser: str
+    files: list[str]
 
 class ListDatasetsResponse(BaseModel):
     total: int
@@ -20,15 +18,18 @@ class ListDatasetsResponse(BaseModel):
 
 @router.get("/", response_model=ListDatasetsResponse)
 async def list_datasets(namespace: str, project: str):
-    project_config = ProjectService.load_config(f"{namespace}/{project}")
-    datasets = project_config.get("models", {})
+    project_config = ProjectService.load_config(namespace, project)
+    datasets_config = project_config.get("datasets", [])
+    datasets = [
+      Dataset(
+        name=dataset["name"],
+        parser=dataset["parser"],
+        files=dataset["files"],
+      )
+      for i, dataset in enumerate(datasets_config)
+    ]
 
-    project = Project(
-        id=project_id,
-        name="test",
-        description="test",
-        namespace=namespace,
-    )
-    return DeleteProjectResponse(
-      project=project,
+    return ListDatasetsResponse(
+      total=len(datasets),
+      datasets=datasets,
     )

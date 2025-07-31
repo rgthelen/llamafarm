@@ -1,11 +1,12 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
+from services.project_service import ProjectService
+from config import LlamaFarmConfig
 
 class Project(BaseModel):
-    id: int
-    name: str
-    description: str
-    namespace: str
+    namespace: str;
+    name: str;
+    config: LlamaFarmConfig;
 
 class ListProjectsResponse(BaseModel):
     total: int
@@ -13,7 +14,6 @@ class ListProjectsResponse(BaseModel):
 
 class CreateProjectRequest(BaseModel):
     name: str
-    description: str
 
 class CreateProjectResponse(BaseModel):
     project: Project
@@ -38,14 +38,13 @@ async def list_projects(namespace: str):
 
 @router.post("/{namespace}", response_model=CreateProjectResponse)
 async def create_project(namespace: str, request: CreateProjectRequest):
-    project = Project(
-        id=1,
-        name=request.name,
-        description=request.description,
-        namespace=namespace,
-    )
+    project = ProjectService.create_project(namespace, request.name)
     return CreateProjectResponse(
-      project=project,
+      project=Project(
+        namespace=namespace,
+        name=request.name,
+        config=project,
+      ),
     )
 
 @router.get("/{namespace}/{project_id}", response_model=GetProjectResponse)
