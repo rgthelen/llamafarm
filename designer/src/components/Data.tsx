@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useMemo } from 'react'
 import FontIcon from '../common/FontIcon'
 import Loader from '../common/Loader'
 import LoadingSteps from '../common/LoadingSteps'
@@ -9,6 +9,7 @@ const Data = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [droppedFiles, setDroppedFiles] = useState<File[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [searchValue, setSearchValue] = useState('')
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -53,6 +54,19 @@ const Data = () => {
 
     // console.log('Selected files:', files)
   }
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchValue(value)
+  }
+
+  const filteredFiles = useMemo(
+    () =>
+      droppedFiles.filter(file =>
+        file.name.toLowerCase().includes(searchValue.toLowerCase())
+      ),
+    [droppedFiles, searchValue]
+  )
 
   return (
     <div
@@ -99,13 +113,45 @@ const Data = () => {
           </div>
         ) : (
           <div>
-            <div
-              className="w-full mb-6 flex items-center justify-center bg-blue-500 rounded-lg py-4 text-blue-200 text-center"
-              style={{ background: 'rgba(1, 123, 247, 0.10)' }}
-            >
-              Datasets will appear here when they’re ready
-            </div>
-            <div className="mb-2">Raw data files</div>
+            {false ? (
+              <div
+                className="w-full mb-6 flex items-center justify-center bg-blue-500 rounded-lg py-4 text-blue-200 text-center"
+                style={{ background: 'rgba(1, 123, 247, 0.10)' }}
+              >
+                Datasets will appear here when they’re ready
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 mb-6">
+                {Array.from({ length: 2 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="w-full bg-blue-500 rounded-lg flex flex-col gap-2 p-4"
+                  >
+                    <div className="text-sm">air-craft-maintenance-guides</div>
+                    <div className="text-xs text-blue-100">
+                      Updated on 8/23/25
+                    </div>
+                    <div className="flex flex-row gap-2">
+                      <div className="text-xs bg-blue-200 rounded-xl px-3 py-0.5">
+                        Embedded
+                      </div>
+                      <div className="text-xs bg-blue-200 rounded-xl px-3 py-0.5">
+                        Chunked
+                      </div>
+                    </div>
+                    <div className="text-xs text-blue-100">
+                      more info here in a line
+                    </div>
+                    <div className="flex justify-end">
+                      <button className="text-sm bg-transparent text-green-100 hover:text-black hover:bg-green-100 rounded-lg px-2 py-1 w-fit">
+                        View raw data
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="mb-4">Raw data</div>
             {isLoading && droppedFiles.length <= 0 ? (
               <div className="w-full flex flex-col items-center justify-center border-[1px] border-solid rounded-lg p-4 gap-2 transition-colors border-blue-100">
                 <div className="flex flex-col items-center justify-center gap-4 text-center my-[40px]">
@@ -137,45 +183,62 @@ const Data = () => {
                 </div>
               )
             )}
-            {droppedFiles.length > 0 &&
-              droppedFiles.map((file, i) => (
-                <div className="w-full bg-blue-500 rounded-lg py-2 px-4 text-white text-sm mt-2 flex justify-between items-center">
-                  <div
-                    className="w-1/2 text-[#CCCCCC] text-xs"
-                    style={{
-                      fontFamily: 'Roboto Mono',
-                      fontWeight: '400',
-                      lineHeight: '16px',
-                      letterSpacing: '0.32px',
-                    }}
-                    key={i}
-                  >
-                    {file.name}
+            {filteredFiles.length > 0 && (
+              <div>
+                <div className="w-full flex flex-row gap-2">
+                  <div className="w-3/4 flex flex-row gap-2 items-center bg-transparent rounded-lg pl-2 border-[1px] border-solid border-white">
+                    <FontIcon type="search" className="w-4 h-4 text-white" />
+                    <input
+                      type="search"
+                      className="w-full bg-transparent rounded-lg py-2 px-4 text-white text-sm focus:outline-none"
+                      placeholder="Search files"
+                      onChange={handleSearch}
+                    />
                   </div>
-                  <div className="w-1/2 flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <div className="text-blue-100 text-xs">MX-log-data</div>
-                      <FontIcon
-                        type="chevron-down"
-                        className="w-4 h-4 text-blue-100"
-                      />
-                    </div>
-                    <div className="flex items-center gap-6">
-                      <div className="flex items-center gap-2">
-                        <FontIcon
-                          type="fade"
-                          className="w-4 h-4 text-blue-100"
-                        />
-                        <div className="text-xs text-blue-100">Processing</div>
-                      </div>
-                      <FontIcon
-                        type="trashcan"
-                        className="w-4 h-4 text-blue-100"
-                      />
-                    </div>
+                  <div className="w-1/4 text-sm text-white flex items-center bg-blue-500 rounded-lg px-3 justify-between">
+                    <div>All datasets</div>
+                    <FontIcon
+                      type="chevron-down"
+                      className="w-4 h-4 text-white"
+                    />
                   </div>
                 </div>
-              ))}
+                {filteredFiles.map((file, i) => (
+                  <div className="w-full bg-blue-500 rounded-lg py-2 px-4 text-white text-sm mt-2 flex justify-between items-center">
+                    <div
+                      className="text-xs text-[#CCCCCC] font-mono leading-4 tracking-[0.32px] truncate whitespace-nowrap overflow-hidden"
+                      key={i}
+                    >
+                      {file.name}
+                    </div>
+                    <div className="w-1/2 flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <div className="text-blue-100 text-xs">MX-log-data</div>
+                        <FontIcon
+                          type="chevron-down"
+                          className="w-4 h-4 text-blue-100"
+                        />
+                      </div>
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-2">
+                          <FontIcon
+                            type="fade"
+                            className="w-4 h-4 text-blue-100"
+                          />
+                          <div className="text-xs text-blue-100">
+                            Processing
+                          </div>
+                        </div>
+                        <FontIcon
+                          type="trashcan"
+                          className="w-4 h-4 text-blue-100"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

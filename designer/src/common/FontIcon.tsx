@@ -20,6 +20,7 @@ const CheckmarkFilled = lazy(() => import('../assets/icons/CheckmarkFilled'))
 const Trashcan = lazy(() => import('../assets/icons/Trashcan'))
 const Fade = lazy(() => import('../assets/icons/Fade'))
 const ChevronDown = lazy(() => import('../assets/icons/ChevronDown'))
+const Search = lazy(() => import('../assets/icons/Search'))
 
 type FontIconTypes =
   | 'sun'
@@ -42,6 +43,7 @@ type FontIconTypes =
   | 'trashcan'
   | 'fade'
   | 'chevron-down'
+  | 'search'
 
 export interface FontIconProps {
   className?: string
@@ -100,6 +102,8 @@ const FontIcon: React.FC<FontIconProps> = ({
         return <Fade />
       case 'chevron-down':
         return <ChevronDown />
+      case 'search':
+        return <Search />
     }
   }, [type])
 
