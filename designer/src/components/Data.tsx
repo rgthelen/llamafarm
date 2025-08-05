@@ -113,7 +113,7 @@ const Data = () => {
           </div>
         ) : (
           <div>
-            {false ? (
+            {droppedFiles.length <= 0 ? (
               <div
                 className="w-full mb-6 flex items-center justify-center bg-blue-500 rounded-lg py-4 text-blue-200 text-center"
                 style={{ background: 'rgba(1, 123, 247, 0.10)' }}

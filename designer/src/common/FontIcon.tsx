@@ -21,6 +21,10 @@ const Trashcan = lazy(() => import('../assets/icons/Trashcan'))
 const Fade = lazy(() => import('../assets/icons/Fade'))
 const ChevronDown = lazy(() => import('../assets/icons/ChevronDown'))
 const Search = lazy(() => import('../assets/icons/Search'))
+const ThumbsUp = lazy(() => import('../assets/icons/ThumbsUp'))
+const ThumbsDown = lazy(() => import('../assets/icons/ThumbsDown'))
+const ThumbsUpFilled = lazy(() => import('../assets/icons/ThumbsUpFilled'))
+const ThumbsDownFilled = lazy(() => import('../assets/icons/ThumbsDownFilled'))
 
 type FontIconTypes =
   | 'sun'
@@ -44,6 +48,10 @@ type FontIconTypes =
   | 'fade'
   | 'chevron-down'
   | 'search'
+  | 'thumbs-up'
+  | 'thumbs-down'
+  | 'thumbs-up-filled'
+  | 'thumbs-down-filled'
 
 export interface FontIconProps {
   className?: string
@@ -104,6 +112,14 @@ const FontIcon: React.FC<FontIconProps> = ({
         return <ChevronDown />
       case 'search':
         return <Search />
+      case 'thumbs-up':
+        return <ThumbsUp />
+      case 'thumbs-down':
+        return <ThumbsDown />
+      case 'thumbs-up-filled':
+        return <ThumbsUpFilled />
+      case 'thumbs-down-filled':
+        return <ThumbsDownFilled />
     }
   }, [type])
 

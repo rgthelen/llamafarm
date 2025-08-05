@@ -25,7 +25,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
       case 'user':
         return `${baseStyles} bg-blue-600 text-white rounded-lg`
       case 'assistant':
-        return `bg-transparent`
+        return `bg-transparent text-sm`
       case 'system':
         return `${baseStyles} bg-green-500 text-white rounded-2xl border-green-500 italic`
       case 'error':

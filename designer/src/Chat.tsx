@@ -15,7 +15,6 @@ function Chat() {
       <div
         className={`h-full ${isPanelOpen ? 'w-3/4' : 'flex-1'} text-gray-900 dark:text-white`}
       >
-
         <Outlet />
       </div>
     </div>

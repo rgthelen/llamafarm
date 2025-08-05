@@ -29,6 +29,17 @@ function Chatbox({ isPanelOpen, setIsPanelOpen }: ChatboxProps) {
         "Great start! Before we dive in, we'll need to take a look at your data. Do you have any aircraft logs or other context we can work with?",
       timestamp: new Date(),
     },
+    {
+      type: 'user',
+      content: 'I have aircraft logs in PDFs',
+      timestamp: new Date(),
+    },
+    {
+      type: 'assistant',
+      content:
+        'Fantastic! Please bear with us as we process your data. Background tasks in progress: Parsing PDFs: We are utilizing **PDFParserPro** to extract data from your files. This tool was selected for its accuracy and efficiency in handling complex PDF structures. Chunking Data: Next, we will segment the extracted data into manageable pieces to facilitate further analysis. While we work on this, please share where you plan to deploy your aircraft maintenance application.',
+      timestamp: new Date(),
+    },
   ])
 
   const [inputValue, setInputValue] = useState('')
@@ -74,7 +85,7 @@ function Chatbox({ isPanelOpen, setIsPanelOpen }: ChatboxProps) {
           <FontIcon
             isButton
             type="arrow-filled"
-            className="w-8 h-8 self-end text-gray-600 dark:text-blue-100"
+            className="w-8 h-8 self-end text-gray-600 dark:text-green-100"
             handleOnClick={handleSendClick}
           />
         </div>
