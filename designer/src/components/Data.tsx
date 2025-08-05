@@ -70,7 +70,7 @@ const Data = () => {
 
   return (
     <div
-      className="h-full w-full flex flex-col gap-2 py-8 px-8"
+      className="h-full w-full flex flex-col gap-2"
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}

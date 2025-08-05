@@ -65,7 +65,7 @@ const Prompt = () => {
 
   if (hasGeneratedOutputs) {
     return (
-      <div className="h-full w-full flex flex-col gap-2 py-8 px-8">
+      <div className="w-full flex flex-col gap-2 mb-4">
         <div>Prompt</div>
         <div className="flex flex-row mb-4">
           <div className="w-full flex flex-row">
@@ -110,7 +110,7 @@ const Prompt = () => {
                 for inspection?
               </div>
               <div>Rate outputs</div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 mb-[170px]">
                 {tempOutputs.map(output => (
                   <RateOutput output={output.output} tag={output.tag} />
                 ))}
@@ -152,7 +152,7 @@ const Prompt = () => {
   }
 
   return (
-    <div className="h-full w-full flex flex-col gap-2 pt-8 px-8">
+    <div className="h-full w-full flex flex-col gap-2">
       <div>Prompt</div>
       <div className="text-blue-100">
         Test, tune, and train. Add inputs, review outputs, and give feedback to
