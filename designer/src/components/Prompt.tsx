@@ -68,37 +68,45 @@ const Prompt = () => {
       <div className="w-full flex flex-col gap-2 mb-4">
         <div>Prompt</div>
         <div className="flex flex-row mb-4">
-          <div className="w-full flex flex-row">
+          <div className="w-full flex flex-row items-end">
             <button
-              className={`border-b-2 border-solid ${
+              className={`h-fit border-b-2 border-solid ${
                 activeTab === 'evaluate'
-                  ? 'border-green-100'
-                  : 'border-blue-600'
+                  ? 'border-blue-200 dark:border-green-100'
+                  : 'border-blue-50 dark:border-blue-600'
               } pb-1 pl-4 w-full text-left`}
               onClick={() => setActiveTab('evaluate')}
             >
               Evaluate
             </button>
             <button
-              className={`border-b-2 border-solid ${
-                activeTab === 'prompt' ? 'border-green-100' : 'border-blue-600'
+              className={`h-fit border-b-2 border-solid ${
+                activeTab === 'prompt'
+                  ? 'border-blue-200 dark:border-green-100'
+                  : 'border-blue-50 dark:border-blue-600'
               } pb-1 pl-4 w-full text-left`}
               onClick={() => setActiveTab('prompt')}
             >
               Prompt
             </button>
             <button
-              className={`border-b-2 border-solid ${
-                activeTab === 'model' ? 'border-green-100' : 'border-blue-600'
+              className={`h-fit border-b-2 border-solid ${
+                activeTab === 'model'
+                  ? 'border-blue-200 dark:border-green-100'
+                  : 'border-blue-50 dark:border-blue-600'
               } pb-1 pl-4 w-full text-left`}
               onClick={() => setActiveTab('model')}
             >
               Model
             </button>
           </div>
-          <div className="flex flex-col border-[1px] border-solid border-blue-600 rounded-xl p-2 ml-10">
-            <div className="text-2xl text-green-100">23%</div>
-            <div className="text-sm text-green-100">accuracy</div>
+          <div className="flex flex-col border-[1px] border-solid border-blue-50 dark:border-blue-600 rounded-xl p-2 ml-10">
+            <div className="text-2xl text-blue-100 dark:text-green-100">
+              23%
+            </div>
+            <div className="text-sm text-blue-100 dark:text-green-100">
+              accuracy
+            </div>
           </div>
         </div>
         {activeTab === 'evaluate' && (

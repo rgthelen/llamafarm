@@ -84,7 +84,7 @@ const Data = () => {
       />
       <div className="w-full flex flex-col h-full">
         <div className="mb-2">Project data</div>
-        <div className="mb-6 flex flex-row gap-2 justify-between items-center">
+        <div className="mb-2 flex flex-row gap-2 justify-between items-end">
           <div className="text-sm">Dataset</div>
           <button className="py-2 px-3 bg-blue-200 rounded-lg text-sm text-white ">
             Upload data
@@ -125,17 +125,17 @@ const Data = () => {
                 {Array.from({ length: 2 }).map((_, index) => (
                   <div
                     key={index}
-                    className="w-full bg-blue-500 rounded-lg flex flex-col gap-2 p-4"
+                    className="w-full bg-[#FFFFFF] dark:bg-blue-500 rounded-lg border-[1px] border-blue-50 border-solid dark:border-none flex flex-col gap-2 p-4"
                   >
                     <div className="text-sm">air-craft-maintenance-guides</div>
                     <div className="text-xs text-blue-100">
                       Updated on 8/23/25
                     </div>
                     <div className="flex flex-row gap-2">
-                      <div className="text-xs bg-blue-200 rounded-xl px-3 py-0.5">
+                      <div className="text-xs text-white bg-blue-100 dark:bg-blue-200 rounded-xl px-3 py-0.5">
                         Embedded
                       </div>
-                      <div className="text-xs bg-blue-200 rounded-xl px-3 py-0.5">
+                      <div className="text-xs text-white bg-blue-100 dark:bg-blue-200 rounded-xl px-3 py-0.5">
                         Chunked
                       </div>
                     </div>
@@ -143,7 +143,7 @@ const Data = () => {
                       more info here in a line
                     </div>
                     <div className="flex justify-end">
-                      <button className="text-sm bg-transparent text-green-100 hover:text-black hover:bg-green-100 rounded-lg px-2 py-1 w-fit">
+                      <button className="text-sm bg-transparent text-blue-200 dark:text-green-100 hover:text-white hover:bg-blue-100 dark:hover:text-black dark:hover:bg-green-100 rounded-lg px-2 py-1 w-fit">
                         View raw data
                       </button>
                     </div>
@@ -156,7 +156,10 @@ const Data = () => {
               <div className="w-full flex flex-col items-center justify-center border-[1px] border-solid rounded-lg p-4 gap-2 transition-colors border-blue-100">
                 <div className="flex flex-col items-center justify-center gap-4 text-center my-[40px]">
                   <div className="text-xl">Processing your data...</div>
-                  <Loader size={72} />
+                  <Loader
+                    size={72}
+                    className="border-blue-200 dark:border-blue-100"
+                  />
                   <LoadingSteps />
                 </div>
               </div>
@@ -164,10 +167,13 @@ const Data = () => {
               droppedFiles.length <= 0 && (
                 <div className="w-full flex flex-col items-center justify-center border-[1px] border-dashed rounded-lg p-4 gap-2 transition-colors border-blue-100">
                   <div className="flex flex-col items-center justify-center gap-4 text-center my-[56px]">
-                    <FontIcon type="upload" className="w-10 h-10 text-white" />
+                    <FontIcon
+                      type="upload"
+                      className="w-10 h-10 text-gray-800 dark:text-white"
+                    />
                     <div className="text-xl">Drop data here to start</div>
                     <button
-                      className="text-sm py-2 px-6 border-[1px] border-solid border-white rounded-lg hover:bg-white hover:text-blue-200"
+                      className="text-sm py-2 px-6 border-[1px] border-solid border-gray-800 rounded-lg hover:bg-blue-200 hover:border-blue-200 hover:text-white dark:border-white dark:hover:bg-white dark:hover:text-blue-200"
                       onClick={() => {
                         fileInputRef.current?.click()
                       }}
@@ -186,27 +192,32 @@ const Data = () => {
             {filteredFiles.length > 0 && (
               <div>
                 <div className="w-full flex flex-row gap-2">
-                  <div className="w-3/4 flex flex-row gap-2 items-center bg-transparent rounded-lg pl-2 border-[1px] border-solid border-white">
-                    <FontIcon type="search" className="w-4 h-4 text-white" />
+                  <div className="w-3/4 flex flex-row gap-2 items-center bg-[#FFFFFF] dark:bg-transparent rounded-lg pl-2 border-[1px] border-solid border-blue-50 dark:border-blue-0">
+                    <FontIcon
+                      type="search"
+                      className="w-4 h-4 text-gray-800 dark:text-white"
+                    />
                     <input
                       type="search"
-                      className="w-full bg-transparent rounded-lg py-2 px-4 text-white text-sm focus:outline-none"
+                      className="w-full bg-transparent rounded-lg py-2 px-4 text-gray-800 dark:text-white text-sm focus:outline-none"
                       placeholder="Search files"
-                      onChange={handleSearch}
+                      onChange={e => {
+                        console.log(e.target.value)
+                      }}
                     />
                   </div>
-                  <div className="w-1/4 text-sm text-white flex items-center bg-blue-500 rounded-lg px-3 justify-between">
+                  <div className="w-1/4 text-sm text-gray-800 dark:text-white flex items-center bg-[#FFFFFF] dark:bg-blue-500 rounded-lg px-3 justify-between">
                     <div>All datasets</div>
                     <FontIcon
                       type="chevron-down"
-                      className="w-4 h-4 text-white"
+                      className="w-4 h-4 text-gray-800 dark:text-white"
                     />
                   </div>
                 </div>
                 {filteredFiles.map((file, i) => (
-                  <div className="w-full bg-blue-500 rounded-lg py-2 px-4 text-white text-sm mt-2 flex justify-between items-center">
+                  <div className="w-full bg-[#FFFFFF] dark:bg-blue-500 rounded-lg py-2 px-4  text-sm mt-2 flex justify-between items-center">
                     <div
-                      className="text-xs text-[#CCCCCC] font-mono leading-4 tracking-[0.32px] truncate whitespace-nowrap overflow-hidden"
+                      className="text-xs text-[#545454] dark:text-white font-mono leading-4 tracking-[0.32px] truncate whitespace-nowrap overflow-hidden"
                       key={i}
                     >
                       {file.name}
