@@ -4,9 +4,9 @@ from datetime import datetime
 
 from fastapi import UploadFile
 from pydantic import BaseModel
-from server.services.project_service import ProjectService
 
 from core.logging import FastAPIStructLogger
+from services.project_service import ProjectService
 
 logger = FastAPIStructLogger()
 
@@ -38,19 +38,20 @@ class DataService:
         <file_content_hash> # File content
       index/
         by_name/
-          <original_file_name> -> ../raw/<file_content_hash> # symlink to the file content
+          <original_file_name> -> ../raw/<file_content_hash> # symlink to file content
 
     The metadata file is a json file that contains the following information:
     {
       "original_file_name": "example.pdf",
-      "resolved_file_name": "example_1719852800.pdf", # resolved file name with timestamp to avoid collisions
+      "resolved_file_name": "example_1719852800.pdf", # resolved with timestamp
       "timestamp": "1753978291",
       "size": 1000, # in bytes
       "mime_type": "application/pdf", # mime type of the original file
-      "hash": "2b3e321d021e5c625a4a003f0624801fa46faab59b530caddcd65a5c106b8a17" # hash of the file content
+      "hash": "2b3e321d021e5c625a4a003f0624801fa46faab59b530caddcd65a5c106b8a17"
     }
 
-    File name collisions are resolved by adding an epoch timestamp to the file name. E.g. "example.pdf" -> "example_1719852800.pdf"
+    File name collisions are resolved by adding an epoch timestamp to the file name.
+    E.g. "example.pdf" -> "example_1719852800.pdf"
     """
 
     @classmethod
@@ -151,12 +152,12 @@ class DataService:
         # Make sure the file is not in use by another dataset
         project = ProjectService.get_project(namespace, project_id)
         other_dataset = next(
-            (ds for ds in project.config.get("datasets") if ds["name"] != dataset),
+            (ds for ds in project.config.get("datasets") if ds["name"] != dataset and file.hash in ds["files"]),
             None,
         )
         if other_dataset:
             raise FileExistsInAnotherDatasetError(
-                f"File '{file.hash}' is in use by dataset '{other_dataset.name}'"
+                f"File '{file.hash}' is in use by dataset '{other_dataset['name']}'"
             )
 
         metadata_path = os.path.join(data_dir, "meta", f"{file.hash}.json")
