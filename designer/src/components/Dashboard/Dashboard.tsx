@@ -1,12 +1,11 @@
-import FontIcon from '../common/FontIcon'
-import GitlabLogo from '../assets/logos/gitlab-logo.svg'
-import GithubLogo from '../assets/logos/github-logo.svg'
-import SlackLogo from '../assets/logos/slack-logo.svg'
+import FontIcon from '../../common/FontIcon'
+import GitlabLogo from '../../assets/logos/gitlab-logo.svg'
+import GithubLogo from '../../assets/logos/github-logo.svg'
+import SlackLogo from '../../assets/logos/slack-logo.svg'
 
 const DataCards = () => {
   return (
     <div className="w-full flex flex-row gap-2">
-
       <div className="w-1/3 h-[103px] flex flex-col gap-2 rounded-lg p-4 bg-white shadow-md dark:bg-blue-500">
         <div className="text-sm text-gray-700 dark:text-white">
           Model accuracy
@@ -43,7 +42,7 @@ const DataCards = () => {
 
 const Dashboard = () => {
   return (
-    <div className="h-full w-full flex flex-col gap-2 pt-8 px-8">
+    <div className="w-full flex flex-col gap-2">
       <DataCards />
       <div className="w-full flex flex-row gap-2">
         <div className="w-3/5 flex flex-col gap-2">
