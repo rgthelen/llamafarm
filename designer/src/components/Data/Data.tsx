@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useMemo } from 'react'
-import FontIcon from '../common/FontIcon'
-import Loader from '../common/Loader'
-import LoadingSteps from '../common/LoadingSteps'
+import FontIcon from '../../common/FontIcon'
+import Loader from '../../common/Loader'
+import LoadingSteps from '../../common/LoadingSteps'
 
 const Data = () => {
   const [isDragging, setIsDragging] = useState(false)
@@ -192,7 +192,7 @@ const Data = () => {
             {filteredFiles.length > 0 && (
               <div>
                 <div className="w-full flex flex-row gap-2">
-                  <div className="w-3/4 flex flex-row gap-2 items-center bg-[#FFFFFF] dark:bg-transparent rounded-lg pl-2 border-[1px] border-solid border-blue-50 dark:border-blue-0">
+                  <div className="w-3/4 flex flex-row gap-2 items-center bg-[#FFFFFF] dark:bg-transparent rounded-lg pl-2 border-[1px] border-solid border-blue-50 dark:border-blue-100">
                     <FontIcon
                       type="search"
                       className="w-4 h-4 text-gray-800 dark:text-white"
@@ -201,9 +201,8 @@ const Data = () => {
                       type="search"
                       className="w-full bg-transparent rounded-lg py-2 px-4 text-gray-800 dark:text-white text-sm focus:outline-none"
                       placeholder="Search files"
-                      onChange={e => {
-                        console.log(e.target.value)
-                      }}
+                      value={searchValue}
+                      onChange={handleSearch}
                     />
                   </div>
                   <div className="w-1/4 text-sm text-gray-800 dark:text-white flex items-center bg-[#FFFFFF] dark:bg-blue-500 rounded-lg px-3 justify-between">
@@ -215,11 +214,11 @@ const Data = () => {
                   </div>
                 </div>
                 {filteredFiles.map((file, i) => (
-                  <div className="w-full bg-[#FFFFFF] dark:bg-blue-500 rounded-lg py-2 px-4  text-sm mt-2 flex justify-between items-center">
-                    <div
-                      className="text-xs text-[#545454] dark:text-white font-mono leading-4 tracking-[0.32px] truncate whitespace-nowrap overflow-hidden"
-                      key={i}
-                    >
+                  <div
+                    key={i}
+                    className="w-full bg-[#FFFFFF] dark:bg-blue-500 rounded-lg py-2 px-4  text-sm mt-2 flex justify-between items-center"
+                  >
+                    <div className="text-xs text-[#545454] dark:text-white font-mono leading-4 tracking-[0.32px] truncate whitespace-nowrap overflow-hidden">
                       {file.name}
                     </div>
                     <div className="w-1/2 flex justify-between items-center">

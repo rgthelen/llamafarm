@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Chatbox from './components/Chatbox'
+import Chatbox from './components/Chatbox/Chatbox'
 import { Outlet } from 'react-router-dom'
 
 function Chat() {

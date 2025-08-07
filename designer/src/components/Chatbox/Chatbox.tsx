@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Message from './Message'
-import FontIcon from '../common/FontIcon'
+import FontIcon from '../../common/FontIcon'
 
 export interface Message {
   type: 'user' | 'assistant' | 'system' | 'error'

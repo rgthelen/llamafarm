@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import FontIcon from '../common/FontIcon'
+import Tabs from '../Tabs'
+import RateOutput from './RateOutput'
 
 const Prompt = () => {
   const [hasGeneratedOutputs, setHasGeneratedOutputs] = useState(false)
@@ -23,83 +24,20 @@ const Prompt = () => {
     },
   ]
 
-  const RateOutput = ({ output, tag }: { output: string; tag: string }) => {
-    const [isThumbsUpFilled, setIsThumbsUpFilled] = useState(false)
-    const [isThumbsDownFilled, setIsThumbsDownFilled] = useState(false)
-
-    return (
-      <div
-        className={`flex flex-col border-[1px] border-solid border-blue-400 rounded-lg p-4 gap-2 ${
-          isThumbsUpFilled ? 'border-green-100' : ''
-        }`}
-      >
-        <div className="flex flex-row gap-2 justify-between">
-          <div>{output}</div>
-          <div className="flex flex-row gap-2 ml-4">
-            <FontIcon
-              type={isThumbsUpFilled ? 'thumbs-up-filled' : 'thumbs-up'}
-              className="w-6 h-6"
-              isButton
-              handleOnClick={() => {
-                setIsThumbsUpFilled(!isThumbsUpFilled)
-                setIsThumbsDownFilled(false)
-              }}
-            />
-            <FontIcon
-              type={isThumbsDownFilled ? 'thumbs-down-filled' : 'thumbs-down'}
-              className="w-6 h-6"
-              isButton
-              handleOnClick={() => {
-                setIsThumbsDownFilled(!isThumbsDownFilled)
-                setIsThumbsUpFilled(false)
-              }}
-            />
-          </div>
-        </div>
-        <div className="w-fit py-1 px-3 bg-blue-600 rounded-2xl text-sm">
-          {tag}
-        </div>
-      </div>
-    )
-  }
-
   if (hasGeneratedOutputs) {
     return (
       <div className="w-full flex flex-col gap-2 mb-4">
         <div>Prompt</div>
         <div className="flex flex-row mb-4">
-          <div className="w-full flex flex-row items-end">
-            <button
-              className={`h-fit border-b-2 border-solid ${
-                activeTab === 'evaluate'
-                  ? 'border-blue-200 dark:border-green-100'
-                  : 'border-blue-50 dark:border-blue-600'
-              } pb-1 pl-4 w-full text-left`}
-              onClick={() => setActiveTab('evaluate')}
-            >
-              Evaluate
-            </button>
-            <button
-              className={`h-fit border-b-2 border-solid ${
-                activeTab === 'prompt'
-                  ? 'border-blue-200 dark:border-green-100'
-                  : 'border-blue-50 dark:border-blue-600'
-              } pb-1 pl-4 w-full text-left`}
-              onClick={() => setActiveTab('prompt')}
-            >
-              Prompt
-            </button>
-            <button
-              className={`h-fit border-b-2 border-solid ${
-                activeTab === 'model'
-                  ? 'border-blue-200 dark:border-green-100'
-                  : 'border-blue-50 dark:border-blue-600'
-              } pb-1 pl-4 w-full text-left`}
-              onClick={() => setActiveTab('model')}
-            >
-              Model
-            </button>
-          </div>
+          <Tabs
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            tabs={[
+              { id: 'evaluate', label: 'Evaluate' },
+              { id: 'prompt', label: 'Prompt' },
+              { id: 'model', label: 'Model' },
+            ]}
+          />
           <div className="flex flex-col border-[1px] border-solid border-blue-50 dark:border-blue-600 rounded-xl p-2 ml-10">
             <div className="text-2xl text-blue-100 dark:text-green-100">
               23%
@@ -119,8 +57,12 @@ const Prompt = () => {
               </div>
               <div>Rate outputs</div>
               <div className="flex flex-col gap-2 mb-[170px]">
-                {tempOutputs.map(output => (
-                  <RateOutput output={output.output} tag={output.tag} />
+                {tempOutputs.map((output, index) => (
+                  <RateOutput
+                    key={index}
+                    output={output.output}
+                    tag={output.tag}
+                  />
                 ))}
               </div>
             </div>
