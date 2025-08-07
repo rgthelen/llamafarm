@@ -1,7 +1,7 @@
-import FontIcon from '../common/FontIcon'
-import GitlabLogo from '../assets/logos/gitlab-logo.svg'
-import GithubLogo from '../assets/logos/github-logo.svg'
-import SlackLogo from '../assets/logos/slack-logo.svg'
+import FontIcon from '../../common/FontIcon'
+import GitlabLogo from '../../assets/logos/gitlab-logo.svg'
+import GithubLogo from '../../assets/logos/github-logo.svg'
+import SlackLogo from '../../assets/logos/slack-logo.svg'
 
 const DataCards = () => {
   return (
