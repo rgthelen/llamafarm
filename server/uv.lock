@@ -1251,7 +1251,7 @@ test = [
 requires-dist = [
     { name = "appdirs", specifier = ">=1.4.4" },
     { name = "asgi-correlation-id", specifier = ">=4.3.4" },
-    { name = "atomic-agents", specifier = ">=0.1.0" },
+    { name = "atomic-agents", specifier = ">=2.0.1" },
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "fastapi", specifier = ">=0.116.1" },
     { name = "instructor", specifier = ">=1.0.0" },
