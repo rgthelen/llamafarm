@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import clsx from 'clsx'
 import Link from '@docusaurus/Link'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
+import useBaseUrl from '@docusaurus/useBaseUrl'
 import Layout from '@theme/Layout'
 import HomepageFeatures from '@site/src/components/HomepageFeatures'
 import Heading from '@theme/Heading'
@@ -10,21 +11,14 @@ import styles from './index.module.css'
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext()
+  const logoUrl = useBaseUrl('/img/logotype-tall-tan.svg')
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <div className={styles.heroContent}>
-          <img
-            src="/img/logotype-tall-tan.svg"
-            alt="LlamaFarm"
-            className={styles.heroLogo}
-          />
+          <img src={logoUrl} alt="LlamaFarm" className={styles.heroLogo} />
           {/* Title visually replaced by logotype; keep for SEO but hide visually */}
-          <Heading
-            as="h1"
-            className="hero__title"
-            style={{ position: 'absolute', left: '-9999px' }}
-          >
+          <Heading as="h1" className="hero__title sr-only">
             {siteConfig.title}
           </Heading>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
