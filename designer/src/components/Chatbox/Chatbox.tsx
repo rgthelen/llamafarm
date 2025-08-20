@@ -73,14 +73,14 @@ function Chatbox({ isPanelOpen, setIsPanelOpen }: ChatboxProps) {
   }
 
   return (
-    <div className="w-full h-full flex flex-col transition-colors bg-white text-foreground dark:bg-blue-500 dark:text-white">
+    <div className="w-full h-full flex flex-col transition-colors bg-card text-foreground">
       <div
         className={`flex ${isPanelOpen ? 'justify-end mr-1 mt-1' : 'justify-center mt-3'}`}
       >
         <FontIcon
           isButton
           type={isPanelOpen ? 'close-panel' : 'open-panel'}
-          className="w-6 h-6 text-blue-200 hover:text-gray-800 dark:text-blue-300 dark:hover:text-blue-100"
+          className="w-6 h-6 text-primary hover:opacity-80"
           handleOnClick={() => setIsPanelOpen(!isPanelOpen)}
         />
       </div>
@@ -96,12 +96,12 @@ function Chatbox({ isPanelOpen, setIsPanelOpen }: ChatboxProps) {
           ))}
           <div ref={endRef} />
         </div>
-        <div className="shrink-0 flex flex-col gap-3 p-3 rounded-lg bg-secondary mt-3 border border-input dark:border-white/20 focus-within:border-blue-500 dark:focus-within:border-teal-400 transition-colors">
+        <div className="flex flex-col gap-3 p-3 rounded-lg bg-secondary">
           <textarea
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full h-10 resize-none bg-transparent border-none placeholder-opacity-60 focus:outline-none focus:ring-0 font-sans text-sm sm:text-base leading-relaxed overflow-hidden text-foreground placeholder-foreground/60 caret-blue-500 dark:caret-teal-400"
+            className="w-full h-10 resize-none bg-transparent border-none placeholder-opacity-60 focus:outline-none focus:ring-0 font-sans text-sm sm:text-base leading-relaxed overflow-hidden text-foreground placeholder-foreground/60"
             placeholder="Type here..."
           />
           <FontIcon
