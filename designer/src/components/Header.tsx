@@ -115,7 +115,7 @@ function Header() {
                 src={
                   theme === 'dark'
                     ? '/logotype-long-tan.svg'
-                    : '/logotype-long tan-navy.svg'
+                    : '/logotype-long-tan-navy.svg'
                 }
                 alt="LlamaFarm"
                 className="h-5 md:h-6 w-auto"
@@ -172,23 +172,22 @@ function Header() {
                     </DropdownMenuItem>
                   ))}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild className="px-0">
-                    <button
-                      onClick={() => {
-                        setIsProjectOpen(false)
-                        navigate('/', {
-                          state: { openCreate: true, scrollTo: 'projects' },
-                        })
-                        // Fallback localStorage hint for non-SPA transitions
-                        try {
-                          localStorage.setItem('homeOpenCreate', '1')
-                        } catch {}
-                      }}
-                      className="w-full flex items-center justify-center gap-2 rounded-md border border-input text-primary hover:bg-primary hover:text-primary-foreground transition-colors px-3 py-2"
-                    >
+                  <DropdownMenuItem
+                    className="px-0"
+                    onSelect={() => {
+                      setIsProjectOpen(false)
+                      navigate('/', {
+                        state: { openCreate: true, scrollTo: 'projects' },
+                      })
+                      try {
+                        localStorage.setItem('homeOpenCreate', '1')
+                      } catch {}
+                    }}
+                  >
+                    <div className="w-full flex items-center justify-center gap-2 rounded-md border border-input text-primary hover:bg-primary hover:text-primary-foreground transition-colors px-3 py-2">
                       <FontIcon type="add" className="w-4 h-4" />
                       <span>Create new project</span>
-                    </button>
+                    </div>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="px-0"

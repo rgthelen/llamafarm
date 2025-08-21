@@ -277,6 +277,7 @@ function CloudModelsForm({
       <div className="flex flex-col gap-2">
         <Label className="text-xs text-muted-foreground">API Key</Label>
         <Input
+          type="password"
           placeholder="enter here"
           value={apiKey}
           onChange={e => setApiKey(e.target.value)}
@@ -846,7 +847,10 @@ const Models = () => {
   ])
 
   const addProjectModel = (m: InferenceModel) => {
-    setProjectModels(prev => [...prev, m])
+    setProjectModels(prev => {
+      if (prev.some(x => x.id === m.id)) return prev
+      return [...prev, m]
+    })
     if (m.status === 'downloading') {
       const addedId = m.id
       setTimeout(() => {
