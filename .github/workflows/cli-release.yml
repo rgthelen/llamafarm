@@ -96,7 +96,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.version.outputs.binary_name }}
+          name: "${{ steps.build.outputs.binary_name }}*"
           path: cli/*
 
   test-install:
