@@ -71,7 +71,7 @@ function ModelCard({ model, onMakeDefault, onDelete }: ModelCardProps) {
               <FontIcon type="overflow" className="w-4 h-4" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="min-w-[10rem] w-[10rem]">
             {!model.isDefault && (
               <DropdownMenuItem onClick={onMakeDefault}>
                 Make default
@@ -161,7 +161,6 @@ function CloudModelsForm({
     'Together',
     'AWS Bedrock',
     'Ollama (remote)',
-    'Custom',
   ] as const
   type Provider = (typeof providerOptions)[number]
   const modelMap: Record<Provider, string[]> = {
@@ -175,23 +174,29 @@ function CloudModelsForm({
     Together: ['Llama 3 8B', 'Qwen2-72B'],
     'AWS Bedrock': ['Claude 3 Sonnet', 'Llama 3 8B Instruct'],
     'Ollama (remote)': ['llama3.1:8b', 'qwen2.5:7b'],
-    Custom: [],
   }
 
   const [provider, setProvider] = useState<Provider>('OpenAI')
   const [model, setModel] = useState<string>(modelMap['OpenAI'][0])
-  const [customProvider, setCustomProvider] = useState('')
   const [customModel, setCustomModel] = useState('')
   const [apiKey, setApiKey] = useState('')
   const [maxTokens, setMaxTokens] = useState<number | null>(null)
+  const [baseUrl, setBaseUrl] = useState('')
+  const [submitState, setSubmitState] = useState<
+    'idle' | 'loading' | 'success'
+  >('idle')
 
-  const modelsForProvider = provider === 'Custom' ? [] : modelMap[provider]
+  const modelsForProvider = [...modelMap[provider], 'Custom']
+  const canAdd =
+    model === 'Custom'
+      ? apiKey.trim().length > 0 || baseUrl.trim().length > 0
+      : apiKey.trim().length > 0
 
   const handleAddCloud = () => {
-    const name =
-      provider === 'Custom' ? customModel || 'Custom model' : `${model}`
-    const providerLabel =
-      provider === 'Custom' ? customProvider || 'Custom' : provider
+    if (!canAdd || submitState === 'loading') return
+    const name = model === 'Custom' ? customModel || 'Custom model' : `${model}`
+    const providerLabel = provider
+    setSubmitState('loading')
     onAddModel({
       id: `cloud-${provider}-${name}`.toLowerCase().replace(/\s+/g, '-'),
       name,
@@ -199,7 +204,13 @@ function CloudModelsForm({
       badges: ['Cloud', providerLabel],
       status: 'ready',
     })
-    onGoToProject()
+    setTimeout(() => {
+      setSubmitState('success')
+      setTimeout(() => {
+        setSubmitState('idle')
+        onGoToProject()
+      }, 500)
+    }, 800)
   }
 
   return (
@@ -211,9 +222,7 @@ function CloudModelsForm({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="w-full h-9 rounded-md border border-border bg-background px-3 text-left flex items-center justify-between">
-              <span>
-                {provider === 'Custom' ? customProvider || 'Custom' : provider}
-              </span>
+              <span>{provider}</span>
               <FontIcon type="chevron-down" className="w-4 h-4" />
             </button>
           </DropdownMenuTrigger>
@@ -221,9 +230,10 @@ function CloudModelsForm({
             {providerOptions.map(p => (
               <DropdownMenuItem
                 key={p}
+                className="w-full justify-start text-left"
                 onClick={() => {
                   setProvider(p)
-                  if (p !== 'Custom') setModel(modelMap[p][0])
+                  setModel(modelMap[p][0])
                 }}
               >
                 {p}
@@ -231,41 +241,36 @@ function CloudModelsForm({
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        {provider === 'Custom' && (
-          <Input
-            placeholder="Enter provider name"
-            value={customProvider}
-            onChange={e => setCustomProvider(e.target.value)}
-            className="h-9"
-          />
-        )}
       </div>
 
       <div className="flex flex-col gap-2">
         <Label className="text-xs text-muted-foreground">Select model</Label>
-        {provider === 'Custom' ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="w-full h-9 rounded-md border border-border bg-background px-3 text-left flex items-center justify-between">
+              <span>{model}</span>
+              <FontIcon type="chevron-down" className="w-4 h-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-64 max-h-64 overflow-auto">
+            {modelsForProvider.map(m => (
+              <DropdownMenuItem
+                key={m}
+                className="w-full justify-start text-left"
+                onClick={() => setModel(m)}
+              >
+                {m}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {model === 'Custom' && (
           <Input
             placeholder="Enter model name/id"
             value={customModel}
             onChange={e => setCustomModel(e.target.value)}
             className="h-9"
           />
-        ) : (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="w-full h-9 rounded-md border border-border bg-background px-3 text-left flex items-center justify-between">
-                <span>{model}</span>
-                <FontIcon type="chevron-down" className="w-4 h-4" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64 max-h-64 overflow-auto">
-              {modelsForProvider.map(m => (
-                <DropdownMenuItem key={m} onClick={() => setModel(m)}>
-                  {m}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
         )}
       </div>
 
@@ -281,6 +286,23 @@ function CloudModelsForm({
           Your API key can be found in your {provider} account settings
         </div>
       </div>
+
+      {model === 'Custom' && (
+        <div className="flex flex-col gap-2">
+          <Label className="text-xs text-muted-foreground">
+            Base URL override (optional)
+          </Label>
+          <Input
+            placeholder="https://api.example.com"
+            value={baseUrl}
+            onChange={e => setBaseUrl(e.target.value)}
+            className="h-9"
+          />
+          <div className="text-xs text-muted-foreground">
+            Use to point to a proxy or self-hosted endpoint.
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-col gap-2">
         <Label className="text-xs text-muted-foreground">
@@ -314,7 +336,25 @@ function CloudModelsForm({
       </div>
 
       <div className="flex justify-end">
-        <Button onClick={handleAddCloud}>Add new Cloud model to project</Button>
+        <Button
+          onClick={handleAddCloud}
+          disabled={!canAdd || submitState === 'loading'}
+        >
+          {submitState === 'loading' && (
+            <span className="mr-2 inline-flex">
+              <Loader
+                size={14}
+                className="border-blue-400 dark:border-blue-100"
+              />
+            </span>
+          )}
+          {submitState === 'success' && (
+            <span className="mr-2 inline-flex">
+              <FontIcon type="checkmark-filled" className="w-4 h-4" />
+            </span>
+          )}
+          Add new Cloud model to project
+        </Button>
       </div>
     </div>
   )
