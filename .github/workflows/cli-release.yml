@@ -11,6 +11,9 @@ on:
         required: true
         default: 'v1.0.0'
 
+permissions:
+  contents: write
+
 env:
   CLI_NAME: llamafarm-cli
   BINARY_NAME: lf
