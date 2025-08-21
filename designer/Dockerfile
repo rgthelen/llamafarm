@@ -1,13 +1,10 @@
 ARG BUILDPLATFORM
 ARG TARGETPLATFORM
-# Build stage - run on build host platform to avoid QEMU emulation issues
-FROM --platform=$BUILDPLATFORM node:20-bookworm-slim AS builder
+# Build stage - use Alpine to avoid dpkg/qemu issues on multi-arch
+FROM --platform=$BUILDPLATFORM node:20-alpine AS builder
 
-# Install build dependencies (non-interactive to avoid debconf issues)
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3 make g++ \
-    && rm -rf /var/lib/apt/lists/*
+# Install build dependencies
+RUN apk add --no-cache python3 make g++
 
 # Set working directory
 WORKDIR /app
