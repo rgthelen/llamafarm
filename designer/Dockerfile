@@ -1,8 +1,13 @@
-# Build stage - using bullseye instead of alpine for better ARM64 support
-FROM node:20-bullseye-slim AS builder
+ARG BUILDPLATFORM
+ARG TARGETPLATFORM
+# Build stage - run on build host platform to avoid QEMU emulation issues
+FROM --platform=$BUILDPLATFORM node:20-bookworm-slim AS builder
 
-# Install build dependencies
-RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+# Install build dependencies (non-interactive to avoid debconf issues)
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 make g++ \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
@@ -28,8 +33,8 @@ RUN npm cache clean --force \
 # Build
 RUN npm run build
 
-# Production stage
-FROM nginx:alpine
+# Production stage (target platform)
+FROM --platform=$TARGETPLATFORM nginx:alpine
 
 # Install jq for environment variable processing
 RUN apk add --no-cache jq
