@@ -43,6 +43,11 @@ jobs:
             echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           fi
 
+      - name: Copy schema.yaml to CLI config
+        run: |
+          mkdir -p cli/cmd/config
+          cp config/schema.yaml cli/cmd/config/
+
       - name: Build binary
         working-directory: cli
         env:
