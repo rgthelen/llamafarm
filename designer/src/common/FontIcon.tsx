@@ -31,6 +31,7 @@ const ThumbsUpFilled = lazy(() => import('../assets/icons/ThumbsUpFilled'))
 const Trashcan = lazy(() => import('../assets/icons/Trashcan'))
 const Upload = lazy(() => import('../assets/icons/Upload'))
 const UserAvatar = lazy(() => import('../assets/icons/UserAvatar'))
+const Info = lazy(() => import('../assets/icons/Info'))
 
 type FontIconTypes =
   | 'add'
@@ -64,6 +65,7 @@ type FontIconTypes =
   | 'trashcan'
   | 'upload'
   | 'user-avatar'
+  | 'info'
 
 export interface FontIconProps {
   className?: string
@@ -144,6 +146,8 @@ const FontIcon: React.FC<FontIconProps> = ({
         return <Upload />
       case 'user-avatar':
         return <UserAvatar />
+      case 'info':
+        return <Info />
     }
   }, [type])
 

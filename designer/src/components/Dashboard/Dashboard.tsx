@@ -7,6 +7,7 @@ import GithubLogoLight from '../../assets/logos/github-logo-light.svg'
 import SlackLogoLight from '../../assets/logos/slack-logo-light.svg'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ModeToggle, { Mode } from '../ModeToggle'
 import DataCards from './DataCards'
 import ProjectModal, { ProjectModalMode } from '../ProjectModal'
@@ -14,6 +15,7 @@ import ConfigEditor from '../ConfigEditor'
 
 const Dashboard = () => {
   const { theme } = useTheme()
+  const navigate = useNavigate()
   const [mode, setMode] = useState<Mode>('designer')
   const [projectName, setProjectName] = useState<string>('Dashboard')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -107,46 +109,39 @@ const Dashboard = () => {
                 <div className="flex flex-row gap-4 rounded-lg">
                   <div className="w-1/2">
                     <div className="h-[40px] px-2 flex items-center rounded-tl-lg rounded-tr-lg bg-card border-b border-border">
-                      <span className="text-foreground">Models</span>
+                      <div className="flex flex-row gap-2 items-center text-foreground">
+                        <FontIcon type="model" className="w-4 h-4" />
+                        Models
+                      </div>
                     </div>
-                    <div className="p-6 flex flex-col min-h-[325px] rounded-b-lg bg-card">
-                      <div className="mb-4">
-                        <label className="text-xs text-muted-foreground">
-                          Current model
-                        </label>
-                        <div className="w-full flex flex-row gap-2 items-center justify-between">
-                          <div className="rounded-xl px-3 py-1 my-1 w-full bg-secondary">
-                            <span className="text-foreground">TinyLlama</span>
+                    <div className="p-6 flex flex-col min-h-[325px] justify-between rounded-b-lg bg-card">
+                      <div className="flex flex-col gap-3">
+                        <div>
+                          <label className="text-xs text-muted-foreground flex items-center gap-2">
+                            Default inference model
+                            <div className="relative group">
+                              <FontIcon
+                                type="info"
+                                className="w-3.5 h-3.5 text-muted-foreground"
+                              />
+                              <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 mt-2 w-64 rounded-md border border-border bg-popover p-2 text-xs text-popover-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                                Generates AI responses to your questions using
+                                the relevant documents as context.
+                              </div>
+                            </div>
+                          </label>
+                          <div className="mt-2 rounded-xl border border-primary/50 bg-background px-4 py-2 text-base font-medium text-foreground">
+                            TinyLlama
                           </div>
-                          <FontIcon
-                            type="edit"
-                            className="w-6 h-6 text-primary"
-                          />
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Why TinyLama?
                         </div>
                       </div>
-                      <div>
-                        <label className="text-xs text-muted-foreground">
-                          OpenAI API Key
-                        </label>
-                        <div className="w-full flex flex-row gap-2 items-center justify-between my-1">
-                          <div className="rounded-xl px-3 py-1 w-full bg-secondary">
-                            <span className="text-muted-foreground">
-                              Enter here
-                            </span>
-                          </div>
-                          <button className="rounded-lg p-1 w-10 h-8 flex items-center justify-center bg-primary">
-                            <FontIcon
-                              type="add"
-                              className="w-4 h-4 text-primary-foreground"
-                            />
-                          </button>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Connect your project to OpenAI
-                        </div>
+                      <div className="pt-4">
+                        <button
+                          className="w-full text-primary border border-primary rounded-lg py-2 text-base hover:bg-primary/10"
+                          onClick={() => navigate('/chat/models')}
+                        >
+                          Go to models
+                        </button>
                       </div>
                     </div>
                   </div>
