@@ -180,6 +180,7 @@ function CloudModelsForm({
   const [model, setModel] = useState<string>(modelMap['OpenAI'][0])
   const [customModel, setCustomModel] = useState('')
   const [apiKey, setApiKey] = useState('')
+  const [showApiKey, setShowApiKey] = useState(false)
   const [maxTokens, setMaxTokens] = useState<number | null>(null)
   const [baseUrl, setBaseUrl] = useState('')
   const [submitState, setSubmitState] = useState<
@@ -276,13 +277,26 @@ function CloudModelsForm({
 
       <div className="flex flex-col gap-2">
         <Label className="text-xs text-muted-foreground">API Key</Label>
-        <Input
-          type="password"
-          placeholder="enter here"
-          value={apiKey}
-          onChange={e => setApiKey(e.target.value)}
-          className="h-9"
-        />
+        <div className="relative">
+          <Input
+            type={showApiKey ? 'text' : 'password'}
+            placeholder="enter here"
+            value={apiKey}
+            onChange={e => setApiKey(e.target.value)}
+            className="h-9 pr-9"
+          />
+          <button
+            type="button"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            onClick={() => setShowApiKey(v => !v)}
+            aria-label={showApiKey ? 'Hide API key' : 'Show API key'}
+          >
+            <FontIcon
+              type={showApiKey ? 'eye-off' : 'eye'}
+              className="w-4 h-4"
+            />
+          </button>
+        </div>
         <div className="text-xs text-muted-foreground">
           Your API key can be found in your {provider} account settings
         </div>
