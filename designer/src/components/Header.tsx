@@ -105,12 +105,6 @@ function Header() {
 
       <div className="w-full flex items-center h-12">
         <div className="w-1/4 pl-4 flex items-center gap-2">
-          <div
-            className="font-serif text-base font-medium select-none text-foreground"
-            aria-hidden
-          >
-            🦙
-          </div>
           {isHomePage ? (
             <button
               className="font-serif text-base text-foreground"
@@ -118,13 +112,32 @@ function Header() {
               aria-label="LlamaFarm Home"
             >
               <img
-                src="/logotype-long-tan.svg"
+                src={
+                  theme === 'dark'
+                    ? '/logotype-long-tan.svg'
+                    : '/logotype-long tan-navy.svg'
+                }
                 alt="LlamaFarm"
                 className="h-5 md:h-6 w-auto"
               />
             </button>
           ) : (
-            <div ref={projectRef}>
+            <div ref={projectRef} className="flex items-center gap-2">
+              <button
+                onClick={() => navigate('/')}
+                aria-label="LlamaFarm Home"
+                className="hover:opacity-90 transition-opacity"
+              >
+                <img
+                  src={
+                    theme === 'dark'
+                      ? '/llama-head-tan-dark.svg'
+                      : '/llama-head-tan-light.svg'
+                  }
+                  alt="LlamaFarm logo"
+                  className="h-5 md:h-6 w-auto"
+                />
+              </button>
               <DropdownMenu
                 open={isProjectOpen}
                 onOpenChange={setIsProjectOpen}
@@ -159,26 +172,27 @@ function Header() {
                     </DropdownMenuItem>
                   ))}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setIsProjectOpen(false)
-                      navigate('/', {
-                        state: { openCreate: true, scrollTo: 'projects' },
-                      })
-                      // Fallback localStorage hint for non-SPA transitions
-                      try {
-                        localStorage.setItem('homeOpenCreate', '1')
-                      } catch {}
-                    }}
-                    className="px-0"
-                  >
-                    <div className="w-full flex items-center justify-center gap-2 rounded-md border border-input text-primary hover:bg-primary hover:text-primary-foreground transition-colors px-3 py-2">
+                  <DropdownMenuItem asChild className="px-0">
+                    <button
+                      onClick={() => {
+                        setIsProjectOpen(false)
+                        navigate('/', {
+                          state: { openCreate: true, scrollTo: 'projects' },
+                        })
+                        // Fallback localStorage hint for non-SPA transitions
+                        try {
+                          localStorage.setItem('homeOpenCreate', '1')
+                        } catch {}
+                      }}
+                      className="w-full flex items-center justify-center gap-2 rounded-md border border-input text-primary hover:bg-primary hover:text-primary-foreground transition-colors px-3 py-2"
+                    >
                       <FontIcon type="add" className="w-4 h-4" />
                       <span>Create new project</span>
-                    </div>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => {
+                    className="px-0"
+                    onSelect={() => {
                       setIsProjectOpen(false)
                       navigate('/', { state: { scrollTo: 'projects' } })
                       setTimeout(() => {
@@ -186,7 +200,6 @@ function Header() {
                         el?.scrollIntoView({ behavior: 'smooth' })
                       }, 0)
                     }}
-                    className="px-0"
                   >
                     <div className="w-full flex items-center justify-center gap-2 rounded-md text-primary hover:bg-accent/20 px-3 py-2">
                       All projects
