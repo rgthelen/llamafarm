@@ -1,12 +1,7 @@
 name: CodeQL
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  schedule:
-    - cron: '0 3 * * 1'
+  # Disabled push/PR/schedule to avoid conflict with CodeQL Default setup
   workflow_dispatch:
 
 permissions:
