@@ -23,19 +23,6 @@ jobs:
       matrix:
         goos: [linux, darwin, windows]
         goarch: [amd64, arm64]
-        exclude:
-          # Windows ARM64 support is limited, exclude for now
-          - goos: windows
-            goarch: arm64
-        include:
-          # Add ARM support for Linux and macOS
-          - goos: linux
-            goarch: arm
-          # Add 386 support for Linux and Windows
-          - goos: linux
-            goarch: 386
-          - goos: windows
-            goarch: 386
 
     steps:
       - name: Checkout code
@@ -64,100 +51,48 @@ jobs:
           CGO_ENABLED: 0
         run: |
           # Set binary name with .exe extension for Windows
-          BINARY_NAME="${{ env.BINARY_NAME }}"
+          BINARY_NAME="${{ env.BINARY_NAME }}_${{ steps.version.outputs.version }}_${{ matrix.goos }}_${{ matrix.goarch }}"
           if [[ "${{ matrix.goos }}" == "windows" ]]; then
-            BINARY_NAME="${BINARY_NAME}.exe"
+            BINARY_NAME="${BINARY_NAME}_windows_${{ matrix.goarch }}.exe"
           fi
 
           # Build the binary
           go build -ldflags="-s -w -X 'llamafarm-cli/cmd.Version=${{ steps.version.outputs.version }}'" -o "${BINARY_NAME}" .
 
-          # Create archive
-          ARCHIVE_NAME="${{ env.CLI_NAME }}_${{ steps.version.outputs.version }}_${{ matrix.goos }}_${{ matrix.goarch }}"
-          mkdir -p dist
+          # SHA the binary
+          sha256sum "${BINARY_NAME}" > "${BINARY_NAME}.sha256"
+          echo "SHA256: $(cat ${BINARY_NAME}.sha256)"
+          echo "binary_name=${BINARY_NAME}" >> $GITHUB_OUTPUT
 
-          if [[ "${{ matrix.goos }}" == "windows" ]]; then
-            zip "dist/${ARCHIVE_NAME}.zip" "${BINARY_NAME}"
-          else
-            tar -czf "dist/${ARCHIVE_NAME}.tar.gz" "${BINARY_NAME}"
-          fi
+          # # Create archive
+          # ARCHIVE_NAME="${{ env.CLI_NAME }}_${{ steps.version.outputs.version }}_${{ matrix.goos }}_${{ matrix.goarch }}"
+          # mkdir -p dist
+
+          # if [[ "${{ matrix.goos }}" == "windows" ]]; then
+          #   zip "dist/${ARCHIVE_NAME}.zip" "${BINARY_NAME}"
+          # else
+          #   tar -czf "dist/${ARCHIVE_NAME}.tar.gz" "${BINARY_NAME}"
+          # fi
+
+      - name: Upload assets to the Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          files: |
+            cli/${{ steps.version.outputs.binary_name }}
+            cli/${{ steps.version.outputs.binary_name }}.sha256
+          fail_on_unmatched_files: true
+          append_body: true
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.CLI_NAME }}_${{ steps.version.outputs.version }}_${{ matrix.goos }}_${{ matrix.goarch }}
-          path: cli/dist/*
-
-  release:
-    name: Create Release
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Get version
-        id: version
-        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Prepare release assets
-        run: |
-          mkdir -p release-assets
-          find artifacts -name "*.tar.gz" -o -name "*.zip" | xargs -I {} cp {} release-assets/
-          ls -la release-assets/
-
-      - name: Generate release notes
-        run: |
-          cat > release-notes.md << 'EOF'
-          # LlamaFarm CLI ${{ steps.version.outputs.version }}
-
-          ## Installation
-
-          ### Quick Install (Recommended)
-          ```bash
-          curl -fsSL https://raw.githubusercontent.com/llamafarm/llamafarm/main/install.sh | bash
-          ```
-
-          ### Manual Installation
-          Download the appropriate binary for your platform below, extract it, and place it in your PATH.
-
-          ## Platform Support
-          - **Linux**: amd64, arm64, arm, 386
-          - **macOS**: amd64 (Intel), arm64 (Apple Silicon)
-          - **Windows**: amd64, 386
-
-          ## Checksums
-          ```
-          EOF
-
-          # Generate checksums
-          cd release-assets
-          sha256sum * >> ../release-notes.md
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.version.outputs.version }}
-          name: LlamaFarm CLI ${{ steps.version.outputs.version }}
-          body_path: release-notes.md
-          files: release-assets/*
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ steps.version.outputs.binary_name }}
+          path: cli/*
 
   test-install:
     name: Test Installation Script
-    needs: release
+    needs: build
     runs-on: ${{ matrix.os }}
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     strategy:
