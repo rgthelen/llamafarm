@@ -18,10 +18,12 @@ const Integration = lazy(() => import('../assets/icons/Integration'))
 const MoonFilled = lazy(() => import('../assets/icons/MoonFilled'))
 const OpenPanel = lazy(() => import('../assets/icons/OpenPanel'))
 const Prompt = lazy(() => import('../assets/icons/Prompt'))
+const Model = lazy(() => import('../assets/icons/Model'))
 const RecentlyViewed = lazy(() => import('../assets/icons/RecentlyViewed'))
 const Search = lazy(() => import('../assets/icons/Search'))
 const Sun = lazy(() => import('../assets/icons/Sun'))
 const Test = lazy(() => import('../assets/icons/Test'))
+const Overflow = lazy(() => import('../assets/icons/Overflow'))
 const ThumbsDown = lazy(() => import('../assets/icons/ThumbsDown'))
 const ThumbsDownFilled = lazy(() => import('../assets/icons/ThumbsDownFilled'))
 const ThumbsUp = lazy(() => import('../assets/icons/ThumbsUp'))
@@ -49,10 +51,12 @@ type FontIconTypes =
   | 'moon-filled'
   | 'open-panel'
   | 'prompt'
+  | 'model'
   | 'recently-viewed'
   | 'search'
   | 'sun'
   | 'test'
+  | 'overflow'
   | 'thumbs-down'
   | 'thumbs-down-filled'
   | 'thumbs-up'
@@ -114,6 +118,8 @@ const FontIcon: React.FC<FontIconProps> = ({
         return <OpenPanel />
       case 'prompt':
         return <Prompt />
+      case 'model':
+        return <Model />
       case 'recently-viewed':
         return <RecentlyViewed />
       case 'search':
@@ -122,6 +128,8 @@ const FontIcon: React.FC<FontIconProps> = ({
         return <Sun />
       case 'test':
         return <Test />
+      case 'overflow':
+        return <Overflow />
       case 'thumbs-down':
         return <ThumbsDown />
       case 'thumbs-down-filled':

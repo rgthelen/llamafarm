@@ -6,6 +6,7 @@ import Data from './components/Data/Data'
 import Prompt from './components/Prompt/Prompt'
 import Test from './components/Test'
 import Dashboard from './components/Dashboard/Dashboard'
+import Models from './components/Models/Models'
 // Projects standalone page removed; Home now hosts projects section
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/chat" element={<Chat />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="data" element={<Data />} />
+            <Route path="models" element={<Models />} />
             <Route path="prompt" element={<Prompt />} />
             <Route path="test" element={<Test />} />
           </Route>
