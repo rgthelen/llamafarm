@@ -114,10 +114,9 @@ def _get_client(project_config: LlamaFarmConfig) -> instructor.client.Instructor
     if project_config.runtime.provider == Provider.ollama:
         return instructor.from_openai(
             OpenAI(
-                api_key=project_config.runtime.api_key
-                or settings.runtime_ollama_api_key,
+                api_key=project_config.runtime.api_key or settings.ollama_api_key,
                 base_url=project_config.runtime.base_url
-                or f"{settings.runtime_ollama_host}/v1",
+                or f"{settings.ollama_host}/v1",
             ),
             mode=mode,
         )

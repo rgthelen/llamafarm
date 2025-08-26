@@ -19,12 +19,9 @@ class Settings(BaseSettings, env_file=".env"):
     lf_config_template: str = "default"  # e.g. default, rag, completion, chat
 
     # Ollama Configuration
-    designer_ollama_host: str = "http://localhost:11434"
-    designer_ollama_model: str = "llama3.1:8b"
-    designer_ollama_api_key: str = "ollama"
-
-    runtime_ollama_host: str = "http://localhost:11434"
-    runtime_ollama_api_key: str = "ollama"
+    ollama_host: str = "http://localhost:11434"
+    ollama_model: str = "llama3.1:8b"
+    ollama_api_key: str = "ollama"
 
 
 settings = Settings()
