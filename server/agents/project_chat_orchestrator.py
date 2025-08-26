@@ -97,12 +97,19 @@ def _get_history(project_config: LlamaFarmConfig) -> ChatHistory:
 
 
 def _get_client(project_config: LlamaFarmConfig) -> instructor.client.Instructor:
+    mode = (
+        instructor.mode.Mode[project_config.runtime.instructor_mode.upper()]
+        if project_config.runtime.instructor_mode is not None
+        else instructor.Mode.TOOLS
+    )
+
     if project_config.runtime.provider == Provider.openai:
         return instructor.from_openai(
             OpenAI(
                 api_key=project_config.runtime.api_key,
                 base_url=project_config.runtime.base_url,
-            )
+            ),
+            mode=mode,
         )
     if project_config.runtime.provider == Provider.ollama:
         return instructor.from_openai(
@@ -112,11 +119,7 @@ def _get_client(project_config: LlamaFarmConfig) -> instructor.client.Instructor
                 base_url=project_config.runtime.base_url
                 or f"{settings.runtime_ollama_host}/v1",
             ),
-            mode=(
-                instructor.mode.Mode[project_config.runtime.instructor_mode.upper()]
-                if project_config.runtime.instructor_mode is not None
-                else instructor.Mode.TOOLS
-            ),
+            mode=mode,
         )
     else:
         raise ValueError(f"Unsupported provider: {project_config.runtime.provider}")
