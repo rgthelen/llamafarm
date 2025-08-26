@@ -44,8 +44,8 @@ class LLMAnalyzer:
         """Initialize the instructor client for structured outputs"""
         try:
             ollama_client = OpenAI(
-                base_url=settings.ollama_host,
-                api_key=settings.ollama_api_key,
+                base_url=f"{settings.designer_ollama_host}/v1",
+                api_key=settings.designer_ollama_api_key,
             )
             self.client = instructor.from_openai(
                 ollama_client,
@@ -90,7 +90,7 @@ Examples:
 """
 
             return self.client.chat.completions.create(
-                model=settings.ollama_model,
+                model=settings.designer_ollama_model,
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": f"Analyze this message: {message}"},

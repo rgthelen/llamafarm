@@ -51,8 +51,8 @@ class ModelManager:
     def create_client(capabilities: ModelCapabilities) -> Any:
         """Create instructor client with appropriate mode"""
         ollama_client = OpenAI(
-            base_url=settings.ollama_host,
-            api_key=settings.ollama_api_key,
+            base_url=f"{settings.designer_ollama_host}/v1",
+            api_key=settings.designer_ollama_api_key,
         )
 
         return instructor.from_openai(ollama_client, mode=capabilities.instructor_mode)
@@ -88,7 +88,7 @@ Format project lists in a readable way with bullet points."""
 
         config_params = {
             "client": client,
-            "model": settings.ollama_model,
+            "model": settings.designer_ollama_model,
             "model_api_parameters": {
                 "temperature": 0.1,
                 "top_p": 0.9,
@@ -106,10 +106,10 @@ Format project lists in a readable way with bullet points."""
         logger.info("Creating new agent")
 
         # Get model capabilities
-        capabilities = ModelManager.get_capabilities(settings.ollama_model)
+        capabilities = ModelManager.get_capabilities(settings.designer_ollama_model)
         logger.info(
             "Model capabilities determined",
-            model=settings.ollama_model,
+            model=settings.designer_ollama_model,
             supports_tools=capabilities.supports_tools,
             instructor_mode=capabilities.instructor_mode.value,
         )
