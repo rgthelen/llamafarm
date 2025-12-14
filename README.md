@@ -429,13 +429,13 @@ We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for:
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%">
-        <a href="https://github.com/BobbyRadford">
-          <img src="https://avatars.githubusercontent.com/u/6943982?v=4?v=4&s=100" width="100px;" alt="Bobby Radford"/>
+        <a href="https://github.com/rachradulo">
+          <img src="https://avatars.githubusercontent.com/u/128095403?v=4?v=4&s=100" width="100px;" alt="Rachel Orrino"/>
           <br />
-          <sub><b>Bobby Radford</b></sub>
+          <sub><b>Rachel Orrino</b></sub>
         </a>
         <br />
-        <a href="https://github.com/llama-farm/llamafarm/commits?author=BobbyRadford" title="Code">💻</a>
+        <a href="https://github.com/llama-farm/llamafarm/commits?author=rachradulo" title="Code">💻</a> <a href="#maintenance" title="Maintenance">🚧</a> <a href="#projectManagement" title="Project Management">📆</a>
       </td>
       <td align="center" valign="top" width="14.28%">
         <a href="https://github.com/mhamann">
@@ -444,7 +444,16 @@ We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for:
           <sub><b>Matt Hamann</b></sub>
         </a>
         <br />
-        <a href="https://github.com/llama-farm/llamafarm/commits?author=mhamann" title="Code">💻</a>
+        <a href="https://github.com/llama-farm/llamafarm/commits?author=mhamann" title="Code">💻</a> <a href="#maintenance" title="Maintenance">🚧</a> <a href="#projectManagement" title="Project Management">📆</a>
+      </td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/BobbyRadford">
+          <img src="https://avatars.githubusercontent.com/u/6943982?v=4?v=4&s=100" width="100px;" alt="Bobby Radford"/>
+          <br />
+          <sub><b>Bobby Radford</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/llama-farm/llamafarm/commits?author=BobbyRadford" title="Code">💻</a> <a href="#maintenance" title="Maintenance">🚧</a>
       </td>
       <td align="center" valign="top" width="14.28%">
         <a href="https://github.com/rgthelen">
@@ -453,25 +462,7 @@ We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for:
           <sub><b>Rob Thelen</b></sub>
         </a>
         <br />
-        <a href="https://github.com/llama-farm/llamafarm/commits?author=rgthelen" title="Code">💻</a>
-      </td>
-      <td align="center" valign="top" width="14.28%">
-        <a href="https://github.com/rachradulo">
-          <img src="https://avatars.githubusercontent.com/u/128095403?v=4?v=4&s=100" width="100px;" alt="rachradulo"/>
-          <br />
-          <sub><b>rachradulo</b></sub>
-        </a>
-        <br />
-        <a href="https://github.com/llama-farm/llamafarm/commits?author=rachradulo" title="Code">💻</a>
-      </td>
-      <td align="center" valign="top" width="14.28%">
-        <a href="https://github.com/davon-davis">
-          <img src="https://avatars.githubusercontent.com/u/77517056?v=4?v=4&s=100" width="100px;" alt="Davon Davis"/>
-          <br />
-          <sub><b>Davon Davis</b></sub>
-        </a>
-        <br />
-        <a href="https://github.com/llama-farm/llamafarm/commits?author=davon-davis" title="Code">💻</a>
+        <a href="https://github.com/llama-farm/llamafarm/commits?author=rgthelen" title="Code">💻</a> <a href="#maintenance" title="Maintenance">🚧</a>
       </td>
       <td align="center" valign="top" width="14.28%">
         <a href="https://github.com/rachmlenig">
@@ -490,6 +481,44 @@ We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for:
         </a>
         <br />
         <a href="https://github.com/llama-farm/llamafarm/commits?author=github-actions[bot]" title="Code">💻</a>
+      </td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/naaa760">
+          <img src="https://avatars.githubusercontent.com/u/182316592?v=4?v=4&s=100" width="100px;" alt="Neha Prasad"/>
+          <br />
+          <sub><b>Neha Prasad</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/llama-farm/llamafarm/commits?author=naaa760" title="Code">💻</a>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/davon-davis">
+          <img src="https://avatars.githubusercontent.com/u/77517056?v=4?v=4&s=100" width="100px;" alt="Davon Davis"/>
+          <br />
+          <sub><b>Davon Davis</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/llama-farm/llamafarm/commits?author=davon-davis" title="Code">💻</a>
+      </td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/jochalek">
+          <img src="https://avatars.githubusercontent.com/u/68436920?v=4?v=4&s=100" width="100px;" alt="Justin Ochalek"/>
+          <br />
+          <sub><b>Justin Ochalek</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/llama-farm/llamafarm/commits?author=jochalek" title="Code">💻</a>
+      </td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/tomokinakamaru">
+          <img src="https://avatars.githubusercontent.com/u/10295467?v=4?v=4&s=100" width="100px;" alt="Tomoki Nakamaru"/>
+          <br />
+          <sub><b>Tomoki Nakamaru</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/llama-farm/llamafarm/commits?author=tomokinakamaru" title="Code">💻</a>
       </td>
     </tr>
   </tbody>
